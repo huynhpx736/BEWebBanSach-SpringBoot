@@ -1,11 +1,10 @@
 //package com.example.bookshop.entity;
 //
-//
-//import jakarta.persistence.*;
+//import jakarta  .persistence.*;
 //
 //@Entity
-//@Table(name = "Publishers")
-//public class Publisher {
+//@Table(name = "Tags")
+//public class Tag {
 //
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,12 +13,5 @@
 //    @Column(nullable = false)
 //    private String name;
 //
-//    @Column
-//    private String address;
-//
-//    @Column
-//    private String contactEmail;
-//
 //    // Getters and Setters
 //}
-//
