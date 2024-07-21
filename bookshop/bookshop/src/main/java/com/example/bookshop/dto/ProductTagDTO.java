@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductTagDTO {
-    private int id;
-    private int productId;
-    private int tagId;
+    private Integer id;
+    private Integer productId;
+    private Integer tagId;
 }

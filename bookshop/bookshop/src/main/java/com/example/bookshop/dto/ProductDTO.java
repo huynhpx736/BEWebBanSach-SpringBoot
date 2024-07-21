@@ -1,22 +1,30 @@
 package com.example.bookshop.dto;
 
+import com.example.bookshop.entity.Author;
+import com.example.bookshop.entity.Category;
+import com.example.bookshop.entity.Publisher;
+import com.example.bookshop.entity.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
-    private int id;
+    private Integer id;
     private String title;
     private String description;
-    private int price;
-    private int publicationYear;
-    private int categoryId;
-    private int publisherId;
-    private int salesVolume;
-    private float starRating;
+    private Integer price;
+    private Integer publicationYear;
+    private Publisher publisher;
+    private Integer salesVolume;
+    private Float starRating;
     private String image;
-    private float weight;
+    private Float weight;
+    private List<Category> categories;
+    private List<Author> authors;
+    private List<Tag> tags;
+
 }

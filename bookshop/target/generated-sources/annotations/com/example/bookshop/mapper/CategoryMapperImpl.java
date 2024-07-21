@@ -1,4 +1,4 @@
-package com.example.bookshop.mappper;
+package com.example.bookshop.mapper;
 
 import com.example.bookshop.dto.CategoryDTO;
 import com.example.bookshop.entity.Category;
@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-07-19T11:53:04+0700",
+    date = "2024-07-21T23:27:46+0700",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
 public class CategoryMapperImpl implements CategoryMapper {
 
     @Override
-    public CategoryDTO categoryToCategoryDTO(Category category) {
+    public CategoryDTO toDTO(Category category) {
         if ( category == null ) {
             return null;
         }
@@ -28,7 +28,7 @@ public class CategoryMapperImpl implements CategoryMapper {
     }
 
     @Override
-    public Category categoryDTOToCategory(CategoryDTO categoryDTO) {
+    public Category toEntity(CategoryDTO categoryDTO) {
         if ( categoryDTO == null ) {
             return null;
         }
@@ -39,15 +39,5 @@ public class CategoryMapperImpl implements CategoryMapper {
         category.setName( categoryDTO.getName() );
 
         return category;
-    }
-
-    @Override
-    public void updateCategoryFromDTO(CategoryDTO categoryDTO, Category category) {
-        if ( categoryDTO == null ) {
-            return;
-        }
-
-        category.setId( categoryDTO.getId() );
-        category.setName( categoryDTO.getName() );
     }
 }

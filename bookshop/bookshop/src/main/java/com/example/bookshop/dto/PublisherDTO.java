@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PublisherDTO {
-    private int id;
+    private Integer id;
     private String name;
     private String address;
     private String email;

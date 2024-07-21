@@ -10,11 +10,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
-    private int id;
-    private int userId;
+    private Integer id;
+    private Integer userId;
     private Date orderDate;
     private String status;
-    private float total;
-    private float shippingFee;
-    private float discount;
+    private Integer total;
+    private Integer shippingFee;
+    private Integer discount;
 }

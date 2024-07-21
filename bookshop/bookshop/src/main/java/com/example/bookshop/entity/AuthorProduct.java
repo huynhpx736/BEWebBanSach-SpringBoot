@@ -15,7 +15,7 @@ import lombok.Setter;
 public class AuthorProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
