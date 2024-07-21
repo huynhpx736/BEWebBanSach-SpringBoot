@@ -1,25 +1,24 @@
-//package com.example.bookshop.entity;
-//
-//
-//import jakarta.persistence.*;
-//
-//@Entity
-//@Table(name = "Publishers")
-//public class Publisher {
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-//
-//    @Column(nullable = false)
-//    private String name;
-//
-//    @Column
-//    private String address;
-//
-//    @Column
-//    private String contactEmail;
-//
-//    // Getters and Setters
-//}
-//
+package com.example.bookshop.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "publishers")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+
+public class Publisher {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String address;
+    private String email;
+}

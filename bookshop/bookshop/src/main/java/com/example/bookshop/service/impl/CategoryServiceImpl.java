@@ -46,15 +46,22 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.categoryToCategoryDTO(category);
     }
 
-//    @Override
-//    public CategoryDTO updateCategory(Integer id, CategoryDTO categoryDTO) {
+    @Override
+    public CategoryDTO updateCategory(Integer id, CategoryDTO categoryDTO) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        categoryMapper.updateCategoryFromDTO(categoryDTO, category);
+        category = categoryRepository.save(category);
+        return categoryMapper.categoryToCategoryDTO(category);
 //        Category category = categoryRepository.findById(id)
 //                .orElseThrow(() -> new RuntimeException("Category not found"));
 //
-//        categoryMapper.updateCategoryFromDTO(categoryDTO, category);
+//        // Update properties of category entity with those from categoryDTO
+//
 //        category = categoryRepository.save(category);
-//        return categoryMapper.categoryToCategoryDTO(category);
-//    }
+//        return CategoryMapper.INSTANCE.categoryToCategoryDTO(category);
+    }
 
     @Override
     public void deleteCategory(Integer id) {

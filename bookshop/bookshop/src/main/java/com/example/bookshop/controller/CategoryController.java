@@ -37,17 +37,17 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
+    @GetMapping("/get-all")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         List<CategoryDTO> categories = categoryService.getAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-    @GetMapping("/getall")
-    public ResponseEntity<List<Category>> getall(){
-        List<Category> categories = categoryService.getall();
-        return new ResponseEntity<>(categories, HttpStatus.OK);
-    }
+//    @GetMapping("/getall")
+//    public ResponseEntity<List<Category>> getall(){
+//        List<Category> categories = categoryService.getall();
+//        return new ResponseEntity<>(categories, HttpStatus.OK);
+//    }
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Integer id) {
         CategoryDTO category = categoryService.getCategoryById(id);
@@ -60,11 +60,11 @@ public class CategoryController {
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Integer id, @RequestBody CategoryDTO categoryDTO) {
-//        CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
-//        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
-//    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Integer id, @RequestBody CategoryDTO categoryDTO) {
+        CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
+        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Integer id) {
