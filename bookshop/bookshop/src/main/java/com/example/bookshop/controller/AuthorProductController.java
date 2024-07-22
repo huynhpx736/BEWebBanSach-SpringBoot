@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/author-products")
+@RequestMapping("/api/authors-products")
 public class AuthorProductController {
 
     @Autowired

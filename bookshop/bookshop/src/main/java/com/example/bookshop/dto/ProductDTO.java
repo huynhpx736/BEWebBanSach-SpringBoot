@@ -26,5 +26,5 @@ public class ProductDTO {
     private List<Category> categories;
     private List<Author> authors;
     private List<Tag> tags;
-
+    private Float priority;
 }

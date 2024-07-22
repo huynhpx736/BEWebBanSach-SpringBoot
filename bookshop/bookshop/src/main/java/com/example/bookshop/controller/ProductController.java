@@ -1,6 +1,8 @@
 package com.example.bookshop.controller;
 
 import com.example.bookshop.dto.ProductDTO;
+import com.example.bookshop.dto.ProductSearchCriteria;
+import com.example.bookshop.entity.Product;
 import com.example.bookshop.payload.ResponseData;
 import com.example.bookshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,11 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-
+    @PostMapping("/search")
+    public ResponseData searchProducts(@RequestBody ProductSearchCriteria criteria) {
+        List<Product> products = productService.searchProducts(criteria);
+        return new ResponseData(200, "Success", products);
+    }
     @GetMapping("get-all")
     public ResponseEntity<ResponseData> getAllProducts() {
         List<ProductDTO> products = productService.getAllProducts();
