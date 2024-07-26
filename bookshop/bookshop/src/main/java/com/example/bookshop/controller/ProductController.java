@@ -22,6 +22,11 @@ public class ProductController {
         List<Product> products = productService.searchProducts(criteria);
         return new ResponseData(200, "Success", products);
     }
+    @GetMapping("/category/{categoryId}")
+    public ResponseData getAllByCategoriesID(@PathVariable Integer categoryId) {
+        List<ProductDTO> products = productService.getAllByCategoriesID(categoryId);
+        return new ResponseData(200, "Success", products);
+    }
     @GetMapping("get-all")
     public ResponseEntity<ResponseData> getAllProducts() {
         List<ProductDTO> products = productService.getAllProducts();

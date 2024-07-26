@@ -21,6 +21,14 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductMapper productMapper;
 
+
+    @Override
+    public List<ProductDTO> getAllByCategoriesID(Integer categoryId) {
+        return productRepository.findByCategoriesId(categoryId).stream()
+                .map(productMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
     @Override
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll().stream()

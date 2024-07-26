@@ -14,6 +14,7 @@ import com.example.bookshop.entity.Product;
 import java.util.List;
 
 public interface ProductService {
+    List<ProductDTO> getAllByCategoriesID(Integer categoryId);
     List<ProductDTO> getAllProducts();
     ProductDTO getProductById(int id);
     List<Product> searchProducts(ProductSearchCriteria productSearchCriteria);
