@@ -17,7 +17,7 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-    @PostMapping("/search")
+    @PostMapping("/BooleanSearch")
     public ResponseData searchProducts(@RequestBody ProductSearchCriteria criteria) {
         List<Product> products = productService.searchProducts(criteria);
         return new ResponseData(200, "Success", products);

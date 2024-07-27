@@ -117,11 +117,6 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-//    @GetMapping("/getall")
-//    public ResponseEntity<List<CategoryDTO>> getAlalCategories() {
-//        List<CategoryDTO> categories = categoryService.getAllCategories();
-//        return new ResponseEntity<>(categories, HttpStatus.OK);
-//    }
     @GetMapping("/get-all")
     public ResponseEntity<ResponseData> getAllCategories() {
         List<CategoryDTO> categories = categoryService.getAllCategories();

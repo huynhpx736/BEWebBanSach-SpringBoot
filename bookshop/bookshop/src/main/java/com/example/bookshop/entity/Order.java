@@ -24,11 +24,13 @@ public class Order {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "order_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @Column(name = "order_date", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "order_date", nullable = false)
+
     private Date orderDate;
 
     private String status;

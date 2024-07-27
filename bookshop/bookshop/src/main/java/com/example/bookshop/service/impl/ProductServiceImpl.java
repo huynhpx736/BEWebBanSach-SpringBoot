@@ -46,20 +46,34 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> searchProducts(ProductSearchCriteria criteria) {
         List<Product> products = productRepository.findAll();
-
+        //Chỉ lấy những sản phẩm có priority > 0
         return products.stream()
                 .map(product -> calculatePriority(product, criteria))
+//                .filter(product -> product.getPriority() > 0)
                 .sorted((p1, p2) -> Float.compare(p2.getPriority(), p1.getPriority())) // Sort by descending priority
                 .collect(Collectors.toList());
+
+//
+//        return products.stream()
+//                .map(product -> calculatePriority(product, criteria))
+//                .sorted((p1, p2) -> Float.compare(p2.getPriority(), p1.getPriority())) // Sort by descending priority
+//                .collect(Collectors.toList());
+
     }
 
     private Product calculatePriority(Product product, ProductSearchCriteria criteria) {
         float priority = 0;
-
-        // Check title
-        if (criteria.getTitle() != null && product.getTitle().contains(criteria.getTitle())) {
+        //Kiểm tra title, thực hiện xóa khoảng trắng và chuyển về chữ thường rồi so sánh
+if (criteria.getTitle() != null && product.getTitle().toLowerCase().trim().contains(criteria.getTitle().toLowerCase().trim())) {
             priority += criteria.getTitleWeight();
         }
+
+
+
+        // Check title
+//        if (criteria.getTitle() != null && product.getTitle().contains(criteria.getTitle().toLowerCase().trim())) {
+//            priority += criteria.getTitleWeight();
+//        }
 
         // Check author
         if (criteria.getAuthor() != null && product.getAuthors().stream().anyMatch(a -> a.getName().contains(criteria.getAuthor()))) {

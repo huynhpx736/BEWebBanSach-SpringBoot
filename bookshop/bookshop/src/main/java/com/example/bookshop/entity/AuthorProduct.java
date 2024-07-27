@@ -18,10 +18,10 @@ public class AuthorProduct {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
+    @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id")
     private Author author;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id")
     private Product product;
 }

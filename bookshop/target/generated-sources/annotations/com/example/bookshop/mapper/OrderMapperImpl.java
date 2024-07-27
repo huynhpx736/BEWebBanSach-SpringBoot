@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-07-23T00:50:41+0700",
+    date = "2024-07-27T19:39:32+0700",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
@@ -22,6 +22,7 @@ public class OrderMapperImpl implements OrderMapper {
         OrderDTO orderDTO = new OrderDTO();
 
         orderDTO.setId( order.getId() );
+        orderDTO.setUser( order.getUser() );
         orderDTO.setOrderDate( order.getOrderDate() );
         orderDTO.setStatus( order.getStatus() );
         orderDTO.setTotal( (int) order.getTotal() );
@@ -40,6 +41,7 @@ public class OrderMapperImpl implements OrderMapper {
         Order order = new Order();
 
         order.setId( orderDTO.getId() );
+        order.setUser( orderDTO.getUser() );
         order.setOrderDate( orderDTO.getOrderDate() );
         order.setStatus( orderDTO.getStatus() );
         if ( orderDTO.getTotal() != null ) {

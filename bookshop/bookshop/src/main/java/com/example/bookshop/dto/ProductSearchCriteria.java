@@ -1,12 +1,12 @@
 package com.example.bookshop.dto;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+//@Data
 public class ProductSearchCriteria {
     private String title;
     private String author;
@@ -19,12 +19,12 @@ public class ProductSearchCriteria {
     private Integer minPrice;
     private Integer maxPrice;
 
-    private float titleWeight;
-    private float authorWeight;
-    private float categoryWeight;
-    private float publisherWeight;
-    private float yearWeight;
-    private float tagWeight;
-    private float ratingWeight;
-    private float priceWeight;
+    private Float titleWeight;
+    private Float authorWeight;
+    private Float categoryWeight;
+    private Float publisherWeight;
+    private Float yearWeight;
+    private Float tagWeight;
+    private Float ratingWeight;
+    private Float priceWeight;
 }

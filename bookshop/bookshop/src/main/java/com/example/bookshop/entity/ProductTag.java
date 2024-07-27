@@ -17,10 +17,10 @@ public class ProductTag {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "tag_id")
+    @JoinColumn(name = "tag_id", referencedColumnName = "id")
     private Tag tag;
 }
