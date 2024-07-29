@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-07-27T19:39:32+0700",
+    date = "2024-07-29T06:55:10+0700",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
@@ -25,9 +25,14 @@ public class OrderMapperImpl implements OrderMapper {
         orderDTO.setUser( order.getUser() );
         orderDTO.setOrderDate( order.getOrderDate() );
         orderDTO.setStatus( order.getStatus() );
-        orderDTO.setTotal( (int) order.getTotal() );
-        orderDTO.setShippingFee( (int) order.getShippingFee() );
-        orderDTO.setDiscount( (int) order.getDiscount() );
+        orderDTO.setTotal( order.getTotal() );
+        orderDTO.setShippingFee( order.getShippingFee() );
+        orderDTO.setDiscount( order.getDiscount() );
+        orderDTO.setReceiverPhone( order.getReceiverPhone() );
+        orderDTO.setReceiverAddress( order.getReceiverAddress() );
+        orderDTO.setReceiverName( order.getReceiverName() );
+        orderDTO.setCreatedAt( order.getCreatedAt() );
+        orderDTO.setUpdatedAt( order.getUpdatedAt() );
 
         return orderDTO;
     }
@@ -44,15 +49,14 @@ public class OrderMapperImpl implements OrderMapper {
         order.setUser( orderDTO.getUser() );
         order.setOrderDate( orderDTO.getOrderDate() );
         order.setStatus( orderDTO.getStatus() );
-        if ( orderDTO.getTotal() != null ) {
-            order.setTotal( orderDTO.getTotal() );
-        }
-        if ( orderDTO.getShippingFee() != null ) {
-            order.setShippingFee( orderDTO.getShippingFee() );
-        }
-        if ( orderDTO.getDiscount() != null ) {
-            order.setDiscount( orderDTO.getDiscount() );
-        }
+        order.setTotal( orderDTO.getTotal() );
+        order.setShippingFee( orderDTO.getShippingFee() );
+        order.setDiscount( orderDTO.getDiscount() );
+        order.setReceiverPhone( orderDTO.getReceiverPhone() );
+        order.setReceiverAddress( orderDTO.getReceiverAddress() );
+        order.setReceiverName( orderDTO.getReceiverName() );
+        order.setCreatedAt( orderDTO.getCreatedAt() );
+        order.setUpdatedAt( orderDTO.getUpdatedAt() );
 
         return order;
     }

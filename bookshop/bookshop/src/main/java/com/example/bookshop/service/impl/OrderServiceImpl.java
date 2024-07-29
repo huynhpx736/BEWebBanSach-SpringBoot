@@ -21,6 +21,28 @@ public class OrderServiceImpl implements OrderService {
     private OrderMapper orderMapper;
 
     @Override
+    public void cancelOrder(int id, String status) {
+        orderRepository.findById(id).ifPresent(order -> {
+            order.setStatus(status);
+            orderRepository.save(order);
+        });
+    }
+
+    @Override
+    public List<OrderDTO> getOrderByUserAndStatus(Integer userId, String status) {
+        return orderRepository.findByUserIdAndStatus(userId, status).stream()
+                .map(orderMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDTO> getAllOrdersByUserId(Integer userId) {
+        return orderRepository.findByUserId(userId).stream()
+                .map(orderMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<OrderDTO> getAllOrders() {
         return orderRepository.findAll().stream()
                 .map(orderMapper::toDTO)

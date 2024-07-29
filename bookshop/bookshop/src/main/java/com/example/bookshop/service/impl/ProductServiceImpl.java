@@ -23,6 +23,14 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
+    public List<ProductDTO> getNewestProducts() {
+        //trả về danh sách 10 sản phẩm mới nhất từ database
+        return productRepository.findAll().stream()
+                .map(productMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ProductDTO> getAllByCategoriesID(Integer categoryId) {
         return productRepository.findByCategoriesId(categoryId).stream()
                 .map(productMapper::toDTO)
@@ -63,56 +71,76 @@ public class ProductServiceImpl implements ProductService {
 
     private Product calculatePriority(Product product, ProductSearchCriteria criteria) {
         float priority = 0;
-        //Kiểm tra title, thực hiện xóa khoảng trắng và chuyển về chữ thường rồi so sánh
-if (criteria.getTitle() != null && product.getTitle().toLowerCase().trim().contains(criteria.getTitle().toLowerCase().trim())) {
-            priority += criteria.getTitleWeight();
-        }
-
-
 
         // Check title
-//        if (criteria.getTitle() != null && product.getTitle().contains(criteria.getTitle().toLowerCase().trim())) {
-//            priority += criteria.getTitleWeight();
-//        }
+        if (criteria.getTitle() != null && !criteria.getTitle().trim().isEmpty()) {
+            String title = product.getTitle() != null ? product.getTitle().toLowerCase().trim() : "";
+            String searchTitle = criteria.getTitle().toLowerCase().trim();
+            if (title.contains(searchTitle)) {
+                priority += criteria.getTitleWeight();
+            }
+        }
 
         // Check author
-        if (criteria.getAuthor() != null && product.getAuthors().stream().anyMatch(a -> a.getName().contains(criteria.getAuthor()))) {
-            priority += criteria.getAuthorWeight();
+        if (criteria.getAuthor() != null && !criteria.getAuthor().trim().isEmpty()) {
+            String searchAuthor = criteria.getAuthor().toLowerCase().trim();
+            if (product.getAuthors().stream()
+                    .anyMatch(a -> a.getName() != null && a.getName().toLowerCase().trim().contains(searchAuthor))) {
+                priority += criteria.getAuthorWeight();
+            }
         }
 
         // Check category
-        if (criteria.getCategory() != null && product.getCategories().stream().anyMatch(c -> c.getName().contains(criteria.getCategory()))) {
-            priority += criteria.getCategoryWeight();
+        if (criteria.getCategory() != null && !criteria.getCategory().trim().isEmpty()) {
+            String searchCategory = criteria.getCategory().toLowerCase().trim();
+            if (product.getCategories().stream()
+                    .anyMatch(c -> c.getName() != null && c.getName().toLowerCase().trim().contains(searchCategory))) {
+                priority += criteria.getCategoryWeight();
+            }
         }
 
         // Check publisher
-        if (criteria.getPublisher() != null && product.getPublisher().getName().contains(criteria.getPublisher())) {
-            priority += criteria.getPublisherWeight();
+        if (criteria.getPublisher() != null && !criteria.getPublisher().trim().isEmpty()) {
+            String publisher = product.getPublisher() != null ? product.getPublisher().getName().toLowerCase().trim() : "";
+            String searchPublisher = criteria.getPublisher().toLowerCase().trim();
+            if (publisher.contains(searchPublisher)) {
+                priority += criteria.getPublisherWeight();
+            }
         }
 
         // Check publication year
-        if (criteria.getPublicationYear() != null && product.getPublicationYear().equals(criteria.getPublicationYear())) {
-            priority += criteria.getYearWeight();
+        if (criteria.getPublicationYear() != null) {
+            if (product.getPublicationYear() != null && product.getPublicationYear().equals(criteria.getPublicationYear())) {
+                priority += criteria.getYearWeight();
+            }
         }
 
         // Check tag
-        if (criteria.getTag() != null && product.getTags().stream().anyMatch(t -> t.getName().contains(criteria.getTag()))) {
-            priority += criteria.getTagWeight();
+        if (criteria.getTag() != null && !criteria.getTag().trim().isEmpty()) {
+            String searchTag = criteria.getTag().toLowerCase().trim();
+            if (product.getTags().stream()
+                    .anyMatch(t -> t.getName() != null && t.getName().toLowerCase().trim().contains(searchTag))) {
+                priority += criteria.getTagWeight();
+            }
         }
 
         // Check rating
         if (criteria.getMinRating() != null && criteria.getMaxRating() != null &&
-                product.getStarRating() != null &&
-                product.getStarRating() >= criteria.getMinRating() &&
-                product.getStarRating() <= criteria.getMaxRating()) {
-            priority += criteria.getRatingWeight();
+                criteria.getMinRating() <= criteria.getMaxRating()) {
+            if (product.getStarRating() != null &&
+                    product.getStarRating() >= criteria.getMinRating() &&
+                    product.getStarRating() <= criteria.getMaxRating()) {
+                priority += criteria.getRatingWeight();
+            }
         }
 
         // Check price
         if (criteria.getMinPrice() != null && criteria.getMaxPrice() != null &&
-                product.getPrice() >= criteria.getMinPrice() &&
-                product.getPrice() <= criteria.getMaxPrice()) {
-            priority += criteria.getPriceWeight();
+                criteria.getMinPrice() <= criteria.getMaxPrice()) {
+            if (product.getPrice() >= criteria.getMinPrice() &&
+                    product.getPrice() <= criteria.getMaxPrice()) {
+                priority += criteria.getPriceWeight();
+            }
         }
 
         // Set the priority in product for sorting

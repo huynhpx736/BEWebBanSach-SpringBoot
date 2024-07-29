@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -14,9 +15,24 @@ public class OrderDTO {
     private Integer id;
     private User user;
 //    private Integer userId;
-    private Date orderDate;
+//    private Date orderDate;
+//    private String status;
+//    private Integer total;
+//    private Integer shippingFee;
+//    private Integer discount;
+//    private String receiverPhone;
+//    private String receiverAddress;
+//    private String receiverName;
+//    private Date createdAt;
+//    private Date updatedAt;
+    private LocalDateTime orderDate;
     private String status;
-    private Integer total;
-    private Integer shippingFee;
-    private Integer discount;
+    private float total;
+    private float shippingFee;
+    private float discount;
+    private String receiverPhone;
+    private String receiverAddress;
+    private String receiverName;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

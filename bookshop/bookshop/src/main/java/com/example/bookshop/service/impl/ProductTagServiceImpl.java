@@ -3,7 +3,9 @@ package com.example.bookshop.service.impl;
 import com.example.bookshop.dto.ProductTagDTO;
 import com.example.bookshop.entity.ProductTag;
 import com.example.bookshop.mapper.ProductTagMapper;
+import com.example.bookshop.repository.ProductRepository;
 import com.example.bookshop.repository.ProductTagRepository;
+import com.example.bookshop.repository.TagRepository;
 import com.example.bookshop.service.ProductTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,12 @@ public class ProductTagServiceImpl implements ProductTagService {
 
     @Autowired
     private ProductTagMapper productTagMapper;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     @Override
     public List<ProductTagDTO> getAllProductTags() {
@@ -36,18 +44,22 @@ public class ProductTagServiceImpl implements ProductTagService {
 
     @Override
     public ProductTagDTO createProductTag(ProductTagDTO productTagDTO) {
-        ProductTag productTag = productTagMapper.toEntity(productTagDTO);
-        return productTagMapper.toDTO(productTagRepository.save(productTag));
+           ProductTag entity = productTagMapper.toEntity(productTagDTO);
+            if (productTagDTO.getProductId() == null || productTagDTO.getTagId() == null) return null;
+            entity.setProduct(productRepository.findById(productTagDTO.getProductId()).orElse(null));
+            entity.setTag(tagRepository.findById(productTagDTO.getTagId()).orElse(null));
+            return productTagMapper.toDTO(productTagRepository.save(entity));
     }
 
     @Override
     public ProductTagDTO updateProductTag(int id, ProductTagDTO productTagDTO) {
-        if (productTagRepository.existsById(id)) {
-            ProductTag productTag = productTagMapper.toEntity(productTagDTO);
-            productTag.setId(id);
-            return productTagMapper.toDTO(productTagRepository.save(productTag));
-        }
-        return null;
+        System.out.println(productTagDTO);
+        ProductTag entity = productTagRepository.findById(id).orElse(null);
+        if (entity == null) return null;
+        if (productTagDTO.getProductId() == null || productTagDTO.getTagId() == null) return null;
+        entity.setProduct(productRepository.findById(productTagDTO.getProductId()).orElse(null));
+        entity.setTag(tagRepository.findById(productTagDTO.getTagId()).orElse(null));
+        return productTagMapper.toDTO(productTagRepository.save(entity));
     }
 
     @Override

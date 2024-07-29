@@ -17,6 +17,11 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @GetMapping("/newest")
+    public ResponseEntity<ResponseData> getNewestProducts() {
+        List<ProductDTO> products = productService.getNewestProducts();
+        return ResponseEntity.ok(new ResponseData(200, "Success", products, true));
+    }
     @PostMapping("/BooleanSearch")
     public ResponseData searchProducts(@RequestBody ProductSearchCriteria criteria) {
         List<Product> products = productService.searchProducts(criteria);
