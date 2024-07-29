@@ -29,17 +29,17 @@ public class Order {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "order_date")
+    @Column(name = "order_date",  columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime orderDate;
 
     private String status;
 
-    private float total;
+    private Float total;
 
     @Column(name = "shipping_fee")
-    private float shippingFee;
+    private Float shippingFee;
 
-    private float discount;
+    private Float discount;
 
     @Column(name = "receiver_phone")
     private String receiverPhone;

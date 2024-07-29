@@ -8,6 +8,7 @@ import com.example.bookshop.payload.Request.SignUpRequest;
 import java.util.List;
 
 public interface UserService {
+    void changePassword(int id, String oldPassword, String newPassword );
     UserDTO registerUser(SignUpRequest userRegistrationDTO);
     UserDTO loginUser(SignInRequest signInRequest);
     User findByUsername(String username);

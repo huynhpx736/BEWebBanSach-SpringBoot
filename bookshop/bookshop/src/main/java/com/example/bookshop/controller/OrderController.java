@@ -1,6 +1,7 @@
 package com.example.bookshop.controller;
 
 import com.example.bookshop.dto.OrderDTO;
+import com.example.bookshop.dto.OrderDetailDTO;
 import com.example.bookshop.payload.ResponseData;
 import com.example.bookshop.service.OrderDetailService;
 import com.example.bookshop.service.OrderService;
@@ -19,8 +20,18 @@ public class OrderController {
 
     @Autowired
     private OrderDetailService orderDetailService;
+    @PostMapping("/place")
+    public ResponseEntity<ResponseData> placeOrder(@RequestParam int userId, @RequestBody List<OrderDetailDTO> orderDetails, @RequestBody OrderDTO orderDTO) {
+        OrderDTO placedOrder = orderService.placeOrder(userId, orderDetails, orderDTO);
+        return ResponseEntity.status(201).body(new ResponseData(201, "Order placed", placedOrder, true));
+    }
+    @PutMapping("update-status/{id}")
+    public ResponseEntity<ResponseData> updateOrderStatus(@PathVariable int id, @RequestParam String status) {
+        orderService.updateOrderStatus(id, status);
+        return ResponseEntity.ok(new ResponseData(200, "Order status updated", null, true));
+    }
 
-    @GetMapping("update-status/{id}")
+    @GetMapping("cancel/{id}")
     public ResponseEntity<ResponseData> cancelOrder(@PathVariable int id, @RequestParam String status) {
         orderService.cancelOrder(id, status);
         return ResponseEntity.ok(new ResponseData(200, "Order is "+status, null, true));

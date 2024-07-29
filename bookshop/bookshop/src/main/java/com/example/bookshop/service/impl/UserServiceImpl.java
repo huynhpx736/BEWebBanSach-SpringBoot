@@ -28,7 +28,23 @@ public class UserServiceImpl implements UserService {
 //    @Autowired
 //    private BCryptPasswordEncoder passwordEncoder;
 
-//    @Autowired
+    @Override
+    public void changePassword(int id, String oldPassword, String newPassword) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+//            if (passwordEncoder.matches(oldPassword, user.get().getPassword())) {
+            if (oldPassword.equals(user.get().getPassword())) {
+//                user.get().setPassword(passwordEncoder.encode(newPassword));
+                user.get().setPassword(newPassword);
+                userRepository.save(user.get());
+            } else {
+                throw new UserNotFoundException("Invalid password");
+
+            }
+        }
+    }
+
+    //    @Autowired
 //    private PasswordEncoder passwordEncoder;
 @Override
 public UserDTO registerUser(SignUpRequest userRegistrationDTO) {

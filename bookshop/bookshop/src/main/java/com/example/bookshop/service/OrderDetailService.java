@@ -13,4 +13,5 @@ public interface OrderDetailService {
     List<OrderDetailDTO> getOrderDetailsByOrderId(Integer orderId);
     void addProductToCart(Integer userId, Integer productId, Integer quantity);
     void placeOrder(Integer userId, String receiverPhone, String receiverAddress, String receiverName);
+    public List<OrderDetailDTO> getCartItems(Integer userId);
 }

@@ -15,6 +15,9 @@ public class OrderDetailDTO {
     private Integer productId;
     private Integer quantity;
     private Integer price;
+    private String image;
+    private String productName;
+    private Integer totalPrice;
 
 //    private Date createdAt;
 //    private Date updatedAt;

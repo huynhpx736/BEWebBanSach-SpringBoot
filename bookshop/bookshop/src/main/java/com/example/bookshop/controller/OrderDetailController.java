@@ -71,4 +71,10 @@ public class OrderDetailController {
         orderDetailService.placeOrder(userId, receiverPhone, receiverAddress, receiverName);
         return ResponseEntity.ok(new ResponseData(200, "Order placed", null, true));
     }
+
+    @GetMapping("/get-cart-items/{userId}")
+    public ResponseEntity<ResponseData> getCartItems(@PathVariable Integer userId) {
+        List<OrderDetailDTO> orderDetails = orderDetailService.getCartItems(userId);
+        return ResponseEntity.ok(new ResponseData(200, "Success", orderDetails, true));
+    }
 }

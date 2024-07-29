@@ -12,8 +12,11 @@ import com.example.bookshop.repository.ProductRepository;
 import com.example.bookshop.repository.UserRepository;
 import com.example.bookshop.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
+//import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -83,9 +86,10 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
-        Order order = orderRepository.findActiveOrderByUserId(userId).orElse(new Order());
+//        Order order = orderRepository.findActiveOrderByUserId(userId).orElse(new Order());
+        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING").orElse(new Order());
         order.setUser(user);
-//        order.setOrderDate(new Date()   );
+//        order.setOrderDate(new Date());
         order.setStatus("PENDING");
 
         order = orderRepository.save(order);
@@ -94,21 +98,59 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         orderDetail.setOrder(order);
         orderDetail.setProduct(product);
         orderDetail.setQuantity(quantity);
-        orderDetail.setPrice(product.getPrice() * quantity);
+        orderDetail.setPrice(product.getPrice());
+
+
 
         orderDetailRepository.save(orderDetail);
     }
 
     @Override
     public void placeOrder(Integer userId, String receiverPhone, String receiverAddress, String receiverName) {
-        Order order = orderRepository.findActiveOrderByUserId(userId)
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+//        Order order = orderRepository.findActiveOrderByUserId(userId)
+        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING")
+
                 .orElseThrow(() -> new RuntimeException("No active order found for user"));
 
         order.setReceiverPhone(receiverPhone);
         order.setReceiverAddress(receiverAddress);
         order.setReceiverName(receiverName);
         order.setStatus("PLACED");
-        order.setTotal((float) order.getOrderDetails().stream().mapToDouble(OrderDetail::getPrice).sum())  ;
+        order.setOrderDate(LocalDateTime.now());
+        //ban tong tien cua cac order detail =sum( price * quantity) cua tung order detail
+        order.setTotal((float)(order.getOrderDetails().stream().mapToDouble(orderDetail -> orderDetail.getPrice() * orderDetail.getQuantity()).sum())+order.getShippingFee()-order.getDiscount());
+
+//        order.setTotal((float) order.getOrderDetails().stream().mapToDouble(OrderDetail::getPrice).sum())  ;
         orderRepository.save(order);
     }
+
+    @Override
+    public List<OrderDetailDTO> getCartItems(Integer userId) {
+//        Order order = orderRepository.findActiveOrderByUserId(userId)
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING").orElse(new Order());
+        order.setUser(user);
+//        order.setOrderDate(LocalDateTime.now());
+        order.setStatus("PENDING");
+
+        order = orderRepository.save(order);
+
+//                .orElseThrow(() -> new RuntimeException("No active order found for user"));
+
+        return orderDetailRepository.findByOrderId(order.getId()).stream()
+                .map(orderDetail -> new OrderDetailDTO(
+                        orderDetail.getId(),
+                        orderDetail.getProduct().getId(),
+                        orderDetail.getOrder().getId(),
+                        orderDetail.getQuantity(),
+                        orderDetail.getPrice(),
+                        orderDetail.getProduct().getImage(),
+                        orderDetail.getProduct().getTitle(),
+                        orderDetail.getProduct().getPrice()
+                ))
+                .collect(Collectors.toList());
+    }
+
 }

@@ -27,9 +27,9 @@ public class OrderDTO {
 //    private Date updatedAt;
     private LocalDateTime orderDate;
     private String status;
-    private float total;
-    private float shippingFee;
-    private float discount;
+    private Float total;
+    private Float shippingFee;
+    private Float discount;
     private String receiverPhone;
     private String receiverAddress;
     private String receiverName;

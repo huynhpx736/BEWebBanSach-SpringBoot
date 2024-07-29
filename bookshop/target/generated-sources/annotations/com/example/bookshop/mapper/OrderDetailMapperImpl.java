@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-07-29T06:55:09+0700",
+    date = "2024-07-29T22:37:06+0700",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
@@ -25,6 +25,8 @@ public class OrderDetailMapperImpl implements OrderDetailMapper {
 
         orderDetailDTO.setOrderId( orderDetailOrderId( orderDetail ) );
         orderDetailDTO.setProductId( orderDetailProductId( orderDetail ) );
+        orderDetailDTO.setImage( orderDetailProductImage( orderDetail ) );
+        orderDetailDTO.setProductName( orderDetailProductTitle( orderDetail ) );
         orderDetailDTO.setId( orderDetail.getId() );
         orderDetailDTO.setQuantity( orderDetail.getQuantity() );
         orderDetailDTO.setPrice( orderDetail.getPrice() );
@@ -77,6 +79,36 @@ public class OrderDetailMapperImpl implements OrderDetailMapper {
             return null;
         }
         return id;
+    }
+
+    private String orderDetailProductImage(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return null;
+        }
+        Product product = orderDetail.getProduct();
+        if ( product == null ) {
+            return null;
+        }
+        String image = product.getImage();
+        if ( image == null ) {
+            return null;
+        }
+        return image;
+    }
+
+    private String orderDetailProductTitle(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return null;
+        }
+        Product product = orderDetail.getProduct();
+        if ( product == null ) {
+            return null;
+        }
+        String title = product.getTitle();
+        if ( title == null ) {
+            return null;
+        }
+        return title;
     }
 
     protected Order orderDetailDTOToOrder(OrderDetailDTO orderDetailDTO) {

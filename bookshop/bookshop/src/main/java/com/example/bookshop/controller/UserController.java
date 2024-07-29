@@ -16,6 +16,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PutMapping("/change-password/{id}")
+    public ResponseEntity<ResponseData> changePassword(@PathVariable int id, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        userService.changePassword(id, oldPassword, newPassword);
+        return ResponseEntity.ok(new ResponseData(200, "Password changed", null, true));
+    }
     @GetMapping("/get-all")
     public ResponseEntity<ResponseData> getAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
