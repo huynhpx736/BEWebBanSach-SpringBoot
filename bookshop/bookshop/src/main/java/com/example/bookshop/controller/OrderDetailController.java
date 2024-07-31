@@ -77,4 +77,10 @@ public class OrderDetailController {
         List<OrderDetailDTO> orderDetails = orderDetailService.getCartItems(userId);
         return ResponseEntity.ok(new ResponseData(200, "Success", orderDetails, true));
     }
+
+    @PutMapping("/update-quantity")
+    public ResponseEntity<ResponseData> updateQuantity(@RequestParam int idDetailOrder, @RequestParam int newQuantity) {
+        orderDetailService.updateQuantity(idDetailOrder, newQuantity);
+        return ResponseEntity.ok(new ResponseData(200, "Quantity updated", null, true));
+    }
 }

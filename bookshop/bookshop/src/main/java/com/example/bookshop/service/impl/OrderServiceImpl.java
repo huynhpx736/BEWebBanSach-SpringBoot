@@ -45,7 +45,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDTO> getOrderByUserAndStatus(Integer userId, String status) {
-        return orderRepository.findByUserIdAndStatus(userId, status).stream()
+//        return orderRepository.findByUserIdAndStatus(userId, status).stream()
+        return orderRepository.findAllByUserIdAndStatus(userId, status).stream()
+
                 .map(orderMapper::toDTO)
                 .collect(Collectors.toList());
     }

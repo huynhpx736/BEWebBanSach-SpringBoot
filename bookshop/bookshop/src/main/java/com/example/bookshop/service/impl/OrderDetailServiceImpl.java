@@ -87,7 +87,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
 //        Order order = orderRepository.findActiveOrderByUserId(userId).orElse(new Order());
-        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING").orElse(new Order());
+//        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING").orElse(new Order());
+        Order order = orderRepository.FindOrderIsPending(userId);
+        if (order == null) {
+            order = new Order();
+        }
         order.setUser(user);
 //        order.setOrderDate(new Date());
         order.setStatus("PENDING");
@@ -110,9 +114,14 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
 //        Order order = orderRepository.findActiveOrderByUserId(userId)
-        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING")
+//        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING")
+          Order order = orderRepository.FindOrderIsPending(userId);
+            //neu khong tim thay thi throw exception
+         if (order == null) {
+            throw new RuntimeException("No active order found for user");
+        }
 
-                .orElseThrow(() -> new RuntimeException("No active order found for user"));
+//            .orElseThrow(() -> new RuntimeException("No active order found for user"));
 
         order.setReceiverPhone(receiverPhone);
         order.setReceiverAddress(receiverAddress);
@@ -130,8 +139,13 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     public List<OrderDetailDTO> getCartItems(Integer userId) {
 //        Order order = orderRepository.findActiveOrderByUserId(userId)
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING").orElse(new Order());
+//        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING").orElse(new Order());
+        Order order = orderRepository.FindOrderIsPending(userId);
+        if (order == null) {
+            order = new Order();
+        }
         order.setUser(user);
+
 //        order.setOrderDate(LocalDateTime.now());
         order.setStatus("PENDING");
 
@@ -148,9 +162,16 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                         orderDetail.getPrice(),
                         orderDetail.getProduct().getImage(),
                         orderDetail.getProduct().getTitle(),
-                        orderDetail.getProduct().getPrice()
+                        orderDetail.getPrice()*orderDetail.getQuantity()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateQuantity(int idDetailOrder, int newQuantity) {
+        OrderDetail orderDetail = orderDetailRepository.findById(idDetailOrder).orElseThrow(() -> new RuntimeException("Order detail not found"));
+        orderDetail.setQuantity(newQuantity);
+        orderDetailRepository.save(orderDetail);
     }
 
 }
