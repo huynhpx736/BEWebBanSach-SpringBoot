@@ -97,12 +97,24 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         order.setStatus("PENDING");
 
         order = orderRepository.save(order);
+        //kiem tra xem san pham da co trong order chua, neu da co thi tang so luong, neu chua co thi tao moi
+        OrderDetail orderDetail = orderDetailRepository.findByOrderIdAndProductId(order.getId(), productId);
+        if (orderDetail == null) {
+            orderDetail = new OrderDetail();
+            orderDetail.setOrder(order);
+            orderDetail.setProduct(product);
+            orderDetail.setQuantity(quantity);
+            orderDetail.setPrice(product.getPrice());
+        } else {
+            orderDetail.setQuantity(orderDetail.getQuantity() + quantity);
+        }
 
-        OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setOrder(order);
-        orderDetail.setProduct(product);
-        orderDetail.setQuantity(quantity);
-        orderDetail.setPrice(product.getPrice());
+//
+//        OrderDetail orderDetail = new OrderDetail();
+//        orderDetail.setOrder(order);
+//        orderDetail.setProduct(product);
+//        orderDetail.setQuantity(quantity);
+//        orderDetail.setPrice(product.getPrice());
 
 
 
