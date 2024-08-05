@@ -6,9 +6,18 @@ import com.example.bookshop.entity.Product;
 import com.example.bookshop.payload.ResponseData;
 import com.example.bookshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 @RestController
@@ -17,6 +26,45 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @PutMapping("update-status/{id}")
+    public ResponseEntity<ResponseData> updateStatus(@PathVariable Integer id, @RequestParam Integer status) {
+        productService.updatStatus(id, status);
+        return ResponseEntity.ok(new ResponseData(200, "Status updated", null, true));
+    }
+    @PostMapping("update-image/{id}")
+    public ResponseEntity<Product> uploadProductImage(
+            @PathVariable Integer id,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            // Lưu file vào hệ thống hoặc S3, sau đó lấy đường dẫn file
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+//            String uploadDir = "product-images/";
+            String uploadDir = "D:\\Project\\React\\WebBanSach-TTTN\\bookshop-fe\\public\\images\\products";
+            // Tạo đường dẫn lưu file
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            // Lưu file
+            try (InputStream inputStream = file.getInputStream()) {
+                Path filePath = uploadPath.resolve(fileName);
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ioe) {
+                throw new RuntimeException("Could not save image file: " + fileName, ioe);
+            }
+
+            // Cập nhật URL của hình ảnh trong cơ sở dữ liệu
+//            String imageUrl = "/product-images/" + fileName;
+            String imageUrl = "/images/products/" + fileName;
+            Product updatedProduct = productService.updateProductImage(id, imageUrl);
+
+            return ResponseEntity.ok(updatedProduct);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     @GetMapping("/newest")
     public ResponseEntity<ResponseData> getNewestProducts() {
         List<ProductDTO> products = productService.getNewestProducts();

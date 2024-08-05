@@ -70,6 +70,7 @@ public class Product {
     private Set<Tag> tags;
     @Column
     private Float priority;
-
+    @Column
+    private Integer status;
 
 }

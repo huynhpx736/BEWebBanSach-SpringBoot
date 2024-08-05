@@ -14,6 +14,8 @@ import com.example.bookshop.entity.Product;
 import java.util.List;
 
 public interface ProductService {
+    void updatStatus(Integer id, Integer status);
+    public Product updateProductImage(Integer productId, String imageUrl);
     List<ProductDTO> getNewestProducts();
     List<ProductDTO> getAllByCategoriesID(Integer categoryId);
     List<ProductDTO> getAllProducts();

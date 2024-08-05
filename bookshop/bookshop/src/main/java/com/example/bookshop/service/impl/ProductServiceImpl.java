@@ -3,6 +3,7 @@ package com.example.bookshop.service.impl;
 import com.example.bookshop.dto.ProductDTO;
 import com.example.bookshop.dto.ProductSearchCriteria;
 import com.example.bookshop.entity.Product;
+import com.example.bookshop.exception.ResourceNotFoundException;
 import com.example.bookshop.mapper.ProductMapper;
 import com.example.bookshop.repository.ProductRepository;
 import com.example.bookshop.service.ProductService;
@@ -21,6 +22,22 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductMapper productMapper;
 
+
+    @Override
+    public void updatStatus(Integer id, Integer status) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
+        product.setStatus(status);
+        productRepository.save(product);
+    }
+
+    @Override
+    public Product updateProductImage(Integer productId, String imageUrl) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + productId));
+        product.setImage(imageUrl);
+        return productRepository.save(product);
+    }
 
     @Override
     public List<ProductDTO> getNewestProducts() {
@@ -166,6 +183,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(int id) {
+        //kiem tra san pham co thuoc ve don hang nao khong
+        //neu co thi khong cho xoa
+        //neu khong thi xoa
+
+//        if (orderRepository.existsByProductId(id)) {
+//            throw new RuntimeException("Product is in order, cannot delete");
+//        }
+//
         productRepository.deleteById(id);
     }
 }

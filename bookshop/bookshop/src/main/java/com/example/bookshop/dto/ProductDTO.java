@@ -4,6 +4,7 @@ import com.example.bookshop.entity.Author;
 import com.example.bookshop.entity.Category;
 import com.example.bookshop.entity.Publisher;
 import com.example.bookshop.entity.Tag;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,5 @@ public class ProductDTO {
     private List<Author> authors;
     private List<Tag> tags;
     private Float priority;
+    private Integer status;
 }
