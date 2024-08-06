@@ -20,11 +20,17 @@ public class OrderController {
 
     @Autowired
     private OrderDetailService orderDetailService;
-    @PostMapping("/place")
-    public ResponseEntity<ResponseData> placeOrder(@RequestParam int userId, @RequestBody List<OrderDetailDTO> orderDetails, @RequestBody OrderDTO orderDTO) {
-        OrderDTO placedOrder = orderService.placeOrder(userId, orderDetails, orderDTO);
-        return ResponseEntity.status(201).body(new ResponseData(201, "Order placed", placedOrder, true));
+    @PostMapping("/place-order")
+    public ResponseEntity<ResponseData> placeOrder(@RequestParam Integer userId, @RequestParam String receiverPhone, @RequestParam String receiverAddress, @RequestParam String receiverName, @RequestParam Float shippingFee, @RequestParam Float discount, @RequestParam Float total) {
+        orderService.placeOrder(userId, receiverPhone, receiverAddress, receiverName, shippingFee, discount, total);
+        return ResponseEntity.ok(new ResponseData(200, "Order placed", null, true));
     }
+    //dat hang theo id nguoi dung, danh sach chi tiet don hang va thong tin don hang
+//    @PostMapping("/place")
+//    public ResponseEntity<ResponseData> placeOrder(@RequestParam int userId, @RequestBody List<OrderDetailDTO> orderDetails, @RequestBody OrderDTO orderDTO) {
+//        OrderDTO placedOrder = orderService.placeOrder(userId, orderDetails, orderDTO);
+//        return ResponseEntity.status(201).body(new ResponseData(201, "Order placed", placedOrder, true));
+//    }
     @PutMapping("update-status/{id}")
     public ResponseEntity<ResponseData> updateOrderStatus(@PathVariable int id, @RequestParam String status) {
         orderService.updateOrderStatus(id, status);
@@ -86,9 +92,9 @@ public class OrderController {
         return ResponseEntity.ok(new ResponseData(200, "Order deleted", null, true));
     }
 
-    @PostMapping("/place-order")
-    public ResponseEntity<ResponseData> placeOrder(@RequestParam Integer userId, @RequestParam String receiverPhone, @RequestParam String receiverAddress, @RequestParam String receiverName) {
-        orderDetailService.placeOrder(userId, receiverPhone, receiverAddress, receiverName);
-        return ResponseEntity.ok(new ResponseData(200, "Order placed", null, true));
-    }
+//    @PostMapping("/place-order")
+//    public ResponseEntity<ResponseData> placeOrder(@RequestParam Integer userId, @RequestParam String receiverPhone, @RequestParam String receiverAddress, @RequestParam String receiverName) {
+//        orderDetailService.placeOrder(userId, receiverPhone, receiverAddress, receiverName);
+//        return ResponseEntity.ok(new ResponseData(200, "Order placed", null, true));
+//    }
 }

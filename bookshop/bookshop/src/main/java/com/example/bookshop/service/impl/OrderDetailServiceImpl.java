@@ -121,31 +121,43 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         orderDetailRepository.save(orderDetail);
     }
 
-    @Override
-    public void placeOrder(Integer userId, String receiverPhone, String receiverAddress, String receiverName) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-
-//        Order order = orderRepository.findActiveOrderByUserId(userId)
-//        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING")
-          Order order = orderRepository.FindOrderIsPending(userId);
-            //neu khong tim thay thi throw exception
-         if (order == null) {
-            throw new RuntimeException("No active order found for user");
-        }
-
-//            .orElseThrow(() -> new RuntimeException("No active order found for user"));
-
-        order.setReceiverPhone(receiverPhone);
-        order.setReceiverAddress(receiverAddress);
-        order.setReceiverName(receiverName);
-        order.setStatus("PLACED");
-        order.setOrderDate(LocalDateTime.now());
-        //ban tong tien cua cac order detail =sum( price * quantity) cua tung order detail
-        order.setTotal((float)(order.getOrderDetails().stream().mapToDouble(orderDetail -> orderDetail.getPrice() * orderDetail.getQuantity()).sum())+order.getShippingFee()-order.getDiscount());
-
-//        order.setTotal((float) order.getOrderDetails().stream().mapToDouble(OrderDetail::getPrice).sum())  ;
-        orderRepository.save(order);
-    }
+//    @Override
+//    public void placeOrder(Integer userId, String receiverPhone, String receiverAddress, String receiverName, Float shippingFee, Float discount, Float total) {
+//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+//
+////        Order order = orderRepository.findActiveOrderByUserId(userId)
+////        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING")
+//          Order order = orderRepository.FindOrderIsPending(userId);
+//            //neu khong tim thay thi throw exception
+//         if (order == null) {
+//            throw new RuntimeException("No active order found for user");
+//        }
+//
+////            .orElseThrow(() -> new RuntimeException("No active order found for user"));
+//
+//            order.setUser(user);
+//            order.setShippingFee(shippingFee);
+//            order.setDiscount(discount);
+//            order.setReceiverPhone(receiverPhone);
+//            order.setReceiverAddress(receiverAddress);
+//            order.setReceiverName(receiverName);
+//            order.setStatus("PLACED");
+//            order.setOrderDate(LocalDateTime.now());
+//            order.setTotal(total);
+//            //ban tong tien cua cac order detail =sum( price * quantity) cua tung order detail
+////            order.setTotal((float)(order.getOrderDetails().stream().mapToDouble(orderDetail -> orderDetail.getPrice() * orderDetail.getQuantity()).sum())+order.getShippingFee()-order.getDiscount());
+////
+////        order.setReceiverPhone(receiverPhone);
+////        order.setReceiverAddress(receiverAddress);
+////        order.setReceiverName(receiverName);
+////        order.setStatus("PLACED");
+////        order.setOrderDate(LocalDateTime.now());
+////        //ban tong tien cua cac order detail =sum( price * quantity) cua tung order detail
+////        order.setTotal((float)(order.getOrderDetails().stream().mapToDouble(orderDetail -> orderDetail.getPrice() * orderDetail.getQuantity()).sum())+order.getShippingFee()-order.getDiscount());
+//
+////        order.setTotal((float) order.getOrderDetails().stream().mapToDouble(OrderDetail::getPrice).sum())  ;
+//        orderRepository.save(order);
+//    }
 
     @Override
     public List<OrderDetailDTO> getCartItems(Integer userId) {
@@ -155,6 +167,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         Order order = orderRepository.FindOrderIsPending(userId);
         if (order == null) {
             order = new Order();
+//            return null;
         }
         order.setUser(user);
 
@@ -173,6 +186,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                         orderDetail.getQuantity(),
                         orderDetail.getPrice(),
                         orderDetail.getProduct().getImage(),
+                        orderDetail.getProduct().getWeight(),
                         orderDetail.getProduct().getTitle(),
                         orderDetail.getPrice()*orderDetail.getQuantity()
                 ))

@@ -31,6 +31,7 @@ public interface OrderDetailMapper {
     @Mapping(target = "productId", source = "orderDetail.product.id")
     @Mapping(target = "image", source = "orderDetail.product.image")
     @Mapping(target = "productName", source = "orderDetail.product.title")
+    @Mapping(target = "weight", source = "orderDetail.product.weight")
     OrderDetailDTO toDTO(OrderDetail orderDetail);
 
     @Mapping(target = "order.id", source = "orderDetailDTO.orderId")

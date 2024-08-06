@@ -14,6 +14,7 @@ import com.example.bookshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,53 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.save(order);
         });
     }
+
+    @Override
+    public void placeOrder(Integer userId, String receiverPhone, String receiverAddress, String receiverName, Float shippingFee, Float discount, Float total) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+//        Order order = orderRepository.findActiveOrderByUserId(userId)
+//        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING")
+        Order order = orderRepository.FindOrderIsPending(userId);
+        //neu khong tim thay thi throw exception
+        if (order == null) {
+            throw new RuntimeException("No active order found for user");
+        }
+
+//            .orElseThrow(() -> new RuntimeException("No active order found for user"));
+
+        order.setUser(user);
+        order.setShippingFee(shippingFee);
+        order.setDiscount(discount);
+        order.setReceiverPhone(receiverPhone);
+        order.setReceiverAddress(receiverAddress);
+        order.setReceiverName(receiverName);
+        order.setStatus("PLACED");
+        order.setOrderDate(LocalDateTime.now());
+        order.setTotal(total);
+        //ban tong tien cua cac order detail =sum( price * quantity) cua tung order detail
+//            order.setTotal((float)(order.getOrderDetails().stream().mapToDouble(orderDetail -> orderDetail.getPrice() * orderDetail.getQuantity()).sum())+order.getShippingFee()-order.getDiscount());
+//
+//        order.setReceiverPhone(receiverPhone);
+//        order.setReceiverAddress(receiverAddress);
+//        order.setReceiverName(receiverName);
+//        order.setStatus("PLACED");
+//        order.setOrderDate(LocalDateTime.now());
+//        //ban tong tien cua cac order detail =sum( price * quantity) cua tung order detail
+//        order.setTotal((float)(order.getOrderDetails().stream().mapToDouble(orderDetail -> orderDetail.getPrice() * orderDetail.getQuantity()).sum())+order.getShippingFee()-order.getDiscount());
+
+//        order.setTotal((float) order.getOrderDetails().stream().mapToDouble(OrderDetail::getPrice).sum())  ;
+
+        orderRepository.save(order);
+        //sau khi đặt hàng xong cập nhật lại số lượng sách trong kho
+        List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(order.getId());
+        for (OrderDetail orderDetail : orderDetails) {
+            oderDetailService.updateBookQuantity(orderDetail.getBook().getId(), orderDetail.getQuantity());
+
+
+
+    }
+
 
     @Override
     public List<OrderDTO> getOrderByUserAndStatus(Integer userId, String status) {
@@ -94,24 +142,24 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.deleteById(id);
     }
 
-    @Override
-    public OrderDTO placeOrder(int userId, List<OrderDetailDTO> orderDetails, OrderDTO orderDTO) {
-        // Create a new order with "Pending" status
-        User user = userRepository.findById(userId).orElse(null);
-        orderDTO.setUser(user);
-        OrderDTO createdOrder = createOrder(orderDTO);
-
-        // Add order details
-        for (OrderDetailDTO detailDTO : orderDetails) {
-            OrderDetail orderDetail = orderDetailMapper.toEntity(detailDTO);
-            orderDetail.setOrder(orderMapper.toEntity(createdOrder));
-            orderDetailRepository.save(orderDetail);
-        }
-
-        // Update status to "Placed"
-        createdOrder.setStatus("Placed");
-        return updateOrder(createdOrder.getId(), createdOrder);
-    }
+//    @Override
+//    public OrderDTO placeOrder(int userId, List<OrderDetailDTO> orderDetails, OrderDTO orderDTO) {
+//        // Create a new order with "Pending" status
+//        User user = userRepository.findById(userId).orElse(null);
+//        orderDTO.setUser(user);
+//        OrderDTO createdOrder = createOrder(orderDTO);
+//
+//        // Add order details
+//        for (OrderDetailDTO detailDTO : orderDetails) {
+//            OrderDetail orderDetail = orderDetailMapper.toEntity(detailDTO);
+//            orderDetail.setOrder(orderMapper.toEntity(createdOrder));
+//            orderDetailRepository.save(orderDetail);
+//        }
+//
+//        // Update status to "Placed"
+//        createdOrder.setStatus("Placed");
+//        return updateOrder(createdOrder.getId(), createdOrder);
+//    }
 
     @Override
     public void updateOrderStatus(int id, String status) {

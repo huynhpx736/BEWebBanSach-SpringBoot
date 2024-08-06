@@ -8,6 +8,8 @@ import java.util.List;
 public interface OrderService {
     //chuyển trạng thái đơn hàng sang đã hủy theo id ơn hàng và trạng thái
     void cancelOrder(int id, String status);
+    void placeOrder(Integer userId, String receiverPhone, String receiverAddress, String receiverName, Float shippingFee, Float discount, Float total);
+
     List<OrderDTO> getOrderByUserAndStatus(Integer userId, String status);
 
     List<OrderDTO> getAllOrdersByUserId(Integer userId);
@@ -16,6 +18,6 @@ public interface OrderService {
     OrderDTO createOrder(OrderDTO orderDTO);
     OrderDTO updateOrder(int id, OrderDTO orderDTO);
     void deleteOrder(int id);
-    OrderDTO placeOrder(int userId, List<OrderDetailDTO> orderDetails, OrderDTO orderDTO);
+//    OrderDTO placeOrder(int userId, List<OrderDetailDTO> orderDetails, OrderDTO orderDTO);
     void updateOrderStatus(int id, String status);
 }

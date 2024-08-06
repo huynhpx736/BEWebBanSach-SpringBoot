@@ -12,8 +12,8 @@ public interface OrderDetailService {
 
     List<OrderDetailDTO> getOrderDetailsByOrderId(Integer orderId);
     void addProductToCart(Integer userId, Integer productId, Integer quantity);
-    void placeOrder(Integer userId, String receiverPhone, String receiverAddress, String receiverName);
-    public List<OrderDetailDTO> getCartItems(Integer userId);
+//    void placeOrder(Integer userId, String receiverPhone, String receiverAddress, String receiverName, Float shippingFee, Float discount, Float total);
+     List<OrderDetailDTO> getCartItems(Integer userId);
     //cap nhat so luong san pham trong chi tiet don hang
     void updateQuantity(int idDetailOrder,int newQuantity);
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-08-04T08:54:13+0700",
+    date = "2024-08-06T11:03:28+0700",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
@@ -27,6 +27,7 @@ public class OrderDetailMapperImpl implements OrderDetailMapper {
         orderDetailDTO.setProductId( orderDetailProductId( orderDetail ) );
         orderDetailDTO.setImage( orderDetailProductImage( orderDetail ) );
         orderDetailDTO.setProductName( orderDetailProductTitle( orderDetail ) );
+        orderDetailDTO.setWeight( orderDetailProductWeight( orderDetail ) );
         orderDetailDTO.setId( orderDetail.getId() );
         orderDetailDTO.setQuantity( orderDetail.getQuantity() );
         orderDetailDTO.setPrice( orderDetail.getPrice() );
@@ -109,6 +110,21 @@ public class OrderDetailMapperImpl implements OrderDetailMapper {
             return null;
         }
         return title;
+    }
+
+    private Float orderDetailProductWeight(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return null;
+        }
+        Product product = orderDetail.getProduct();
+        if ( product == null ) {
+            return null;
+        }
+        Float weight = product.getWeight();
+        if ( weight == null ) {
+            return null;
+        }
+        return weight;
     }
 
     protected Order orderDetailDTOToOrder(OrderDetailDTO orderDetailDTO) {

@@ -66,11 +66,11 @@ public class OrderDetailController {
         return ResponseEntity.ok(new ResponseData(200, "Product added to cart", null, true));
     }
 
-    @PostMapping("/place-order")
-    public ResponseEntity<ResponseData> placeOrder(@RequestParam Integer userId, @RequestParam String receiverPhone, @RequestParam String receiverAddress, @RequestParam String receiverName) {
-        orderDetailService.placeOrder(userId, receiverPhone, receiverAddress, receiverName);
-        return ResponseEntity.ok(new ResponseData(200, "Order placed", null, true));
-    }
+//    @PostMapping("/place-order")
+//    public ResponseEntity<ResponseData> placeOrder(@RequestParam Integer userId, @RequestParam String receiverPhone, @RequestParam String receiverAddress, @RequestParam String receiverName) {
+//        orderDetailService.placeOrder(userId, receiverPhone, receiverAddress, receiverName);
+//        return ResponseEntity.ok(new ResponseData(200, "Order placed", null, true));
+//    }
 
     @GetMapping("/get-cart-items/{userId}")
     public ResponseEntity<ResponseData> getCartItems(@PathVariable Integer userId) {

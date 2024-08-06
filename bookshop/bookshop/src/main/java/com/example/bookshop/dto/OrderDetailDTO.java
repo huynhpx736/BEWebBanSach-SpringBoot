@@ -16,6 +16,7 @@ public class OrderDetailDTO {
     private Integer quantity;
     private Integer price;
     private String image;
+    private Float weight;
     private String productName;
     private Integer totalPrice;
 
