@@ -74,15 +74,10 @@ public class ProductServiceImpl implements ProductService {
         //Chỉ lấy những sản phẩm có priority > 0
         return products.stream()
                 .map(product -> calculatePriority(product, criteria))
-//                .filter(product -> product.getPriority() > 0)
-                .sorted((p1, p2) -> Float.compare(p2.getPriority(), p1.getPriority())) // Sort by descending priority
+                .filter(product -> product.getPriority() > 0)
+                .sorted((p1, p2) -> Float.compare(p2.getPriority(), p1.getPriority()))
                 .collect(Collectors.toList());
 
-//
-//        return products.stream()
-//                .map(product -> calculatePriority(product, criteria))
-//                .sorted((p1, p2) -> Float.compare(p2.getPriority(), p1.getPriority())) // Sort by descending priority
-//                .collect(Collectors.toList());
 
     }
 
@@ -92,7 +87,9 @@ public class ProductServiceImpl implements ProductService {
         // Check title
         if (criteria.getTitle() != null && !criteria.getTitle().trim().isEmpty()) {
             String title = product.getTitle() != null ? product.getTitle().toLowerCase().trim() : "";
+//            title = title.replaceAll("\\s+", "");
             String searchTitle = criteria.getTitle().toLowerCase().trim();
+//            searchTitle = searchTitle.replaceAll("\\s+", "");
             if (title.contains(searchTitle)) {
                 priority += criteria.getTitleWeight();
             }

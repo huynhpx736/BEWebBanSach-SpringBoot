@@ -4,11 +4,13 @@ import com.example.bookshop.dto.OrderDTO;
 import com.example.bookshop.dto.OrderDetailDTO;
 import com.example.bookshop.entity.Order;
 import com.example.bookshop.entity.OrderDetail;
+import com.example.bookshop.entity.Product;
 import com.example.bookshop.entity.User;
 import com.example.bookshop.mapper.OrderDetailMapper;
 import com.example.bookshop.mapper.OrderMapper;
 import com.example.bookshop.repository.OrderDetailRepository;
 import com.example.bookshop.repository.OrderRepository;
+import com.example.bookshop.repository.ProductRepository;
 import com.example.bookshop.repository.UserRepository;
 import com.example.bookshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderDetailMapper orderDetailMapper;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public void cancelOrder(int id, String status) {
@@ -46,11 +50,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void placeOrder(Integer userId, String receiverPhone, String receiverAddress, String receiverName, Float shippingFee, Float discount, Float total) {
+
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
 //        Order order = orderRepository.findActiveOrderByUserId(userId)
 //        Order order = orderRepository.findByUserIdAndStatus(userId, "PENDING")
         Order order = orderRepository.FindOrderIsPending(userId);
+//        //cap nhật lai gia cua tung oderdetail ngay tai luc dặt hàng
+//        for (OrderDetail orderDetail : order.getOrderDetails()) {
+//            orderDetail.setPrice(orderDetail.getProduct().getPrice());
+//            orderDetailRepository.save(orderDetail);
+//        }
         //neu khong tim thay thi throw exception
         if (order == null) {
             throw new RuntimeException("No active order found for user");
@@ -81,13 +91,23 @@ public class OrderServiceImpl implements OrderService {
 //        order.setTotal((float) order.getOrderDetails().stream().mapToDouble(OrderDetail::getPrice).sum())  ;
 
         orderRepository.save(order);
-        //sau khi đặt hàng xong cập nhật lại số lượng sách trong kho
-        List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(order.getId());
-        for (OrderDetail orderDetail : orderDetails) {
-            oderDetailService.updateBookQuantity(orderDetail.getBook().getId(), orderDetail.getQuantity());
+        //cập nhat lai so luong cua product sau khi dat hang va luu lai
+        for (OrderDetail orderDetail : order.getOrderDetails()) {
+//            Product product = orderDetail.getProduct();
+//            product.setSalesVolume(product.getSalesVolume() -  orderDetail.getQuantity());
+//            productRepository.save(product);
+            orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() - orderDetail.getQuantity());
+            productRepository.save(orderDetail.getProduct());
+        }
 
 
+    }
 
+    @Override
+    public List<OrderDTO> getAllByStatus(String status) {
+        return orderRepository.findByStatus(status).stream()
+                .map(orderMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
 

@@ -31,6 +31,12 @@ public class OrderController {
 //        OrderDTO placedOrder = orderService.placeOrder(userId, orderDetails, orderDTO);
 //        return ResponseEntity.status(201).body(new ResponseData(201, "Order placed", placedOrder, true));
 //    }
+
+    @GetMapping("get-all-by-status")
+    public ResponseEntity<ResponseData> getAllByStatus(@RequestParam String status) {
+        List<OrderDTO> orders = orderService.getAllByStatus(status);
+        return ResponseEntity.ok(new ResponseData(200, "Success", orders, true));
+    }
     @PutMapping("update-status/{id}")
     public ResponseEntity<ResponseData> updateOrderStatus(@PathVariable int id, @RequestParam String status) {
         orderService.updateOrderStatus(id, status);

@@ -19,6 +19,7 @@ public class OrderDetailDTO {
     private Float weight;
     private String productName;
     private Integer totalPrice;
+    private Integer stock;
 
 //    private Date createdAt;
 //    private Date updatedAt;

@@ -10,6 +10,7 @@ public interface OrderService {
     void cancelOrder(int id, String status);
     void placeOrder(Integer userId, String receiverPhone, String receiverAddress, String receiverName, Float shippingFee, Float discount, Float total);
 
+    List<OrderDTO> getAllByStatus(String status);
     List<OrderDTO> getOrderByUserAndStatus(Integer userId, String status);
 
     List<OrderDTO> getAllOrdersByUserId(Integer userId);

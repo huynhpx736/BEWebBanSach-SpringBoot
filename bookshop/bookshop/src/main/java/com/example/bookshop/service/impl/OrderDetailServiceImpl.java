@@ -169,6 +169,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             order = new Order();
 //            return null;
         }
+        //cap nhật lai gia cua tung oderdetail ngay tai luc dặt hàng
+        for (OrderDetail orderDetail : order.getOrderDetails()) {
+            orderDetail.setPrice(orderDetail.getProduct().getPrice());
+            orderDetailRepository.save(orderDetail);
+        }
         order.setUser(user);
 
 //        order.setOrderDate(LocalDateTime.now());
@@ -181,14 +186,16 @@ public class OrderDetailServiceImpl implements OrderDetailService {
         return orderDetailRepository.findByOrderId(order.getId()).stream()
                 .map(orderDetail -> new OrderDetailDTO(
                         orderDetail.getId(),
-                        orderDetail.getProduct().getId(),
                         orderDetail.getOrder().getId(),
+                        orderDetail.getProduct().getId(),
                         orderDetail.getQuantity(),
                         orderDetail.getPrice(),
+//                        orderDetail.getProduct().getPrice(),
                         orderDetail.getProduct().getImage(),
                         orderDetail.getProduct().getWeight(),
                         orderDetail.getProduct().getTitle(),
-                        orderDetail.getPrice()*orderDetail.getQuantity()
+                        orderDetail.getPrice()*orderDetail.getQuantity(),
+                        orderDetail.getProduct().getSalesVolume()
                 ))
                 .collect(Collectors.toList());
     }
