@@ -16,6 +16,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @PutMapping("/update-classifications")
+    public ResponseEntity<ResponseData> updateClassifications(@RequestParam int id, @RequestParam String classifications) {
+        userService.updateClassifications(id, classifications);
+        return ResponseEntity.ok(new ResponseData(200, "Classifications updated", null, true));
+    }
     @PutMapping("/change-password/{id}")
     public ResponseEntity<ResponseData> changePassword(@PathVariable int id, @RequestParam String oldPassword, @RequestParam String newPassword) {
         userService.changePassword(id, oldPassword, newPassword);

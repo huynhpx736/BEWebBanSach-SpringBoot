@@ -159,6 +159,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+    @Override
+    public void updateClassifications(int id, String classifications) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            user.get().setClassification(classifications);
+            userRepository.save(user.get());
+        }
+    }
+
     @Override
     public void changePassword(int id, String oldPassword, String newPassword) {
         Optional<User> user = userRepository.findById(id);
