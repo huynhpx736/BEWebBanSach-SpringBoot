@@ -169,9 +169,12 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             order = new Order();
 //            return null;
         }
-        //cap nhật lai gia cua tung oderdetail ngay tai luc dặt hàng
+        //cap nhật lai gia va so luong cua tung oderdetail ngay tai luc dặt hàng so voi product
         for (OrderDetail orderDetail : order.getOrderDetails()) {
             orderDetail.setPrice(orderDetail.getProduct().getPrice());
+            if (orderDetail.getQuantity() > orderDetail.getProduct().getSalesVolume()) {
+                orderDetail.setQuantity(orderDetail.getProduct().getSalesVolume());
+            }
             orderDetailRepository.save(orderDetail);
         }
         order.setUser(user);

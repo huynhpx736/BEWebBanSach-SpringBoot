@@ -181,6 +181,14 @@ public class OrderServiceImpl implements OrderService {
 //        return updateOrder(createdOrder.getId(), createdOrder);
 //    }
 
+//    @Override
+//    public void updateOrderStatus(int id, String status) {
+//        OrderDTO orderDTO = getOrderById(id);
+//        if (orderDTO != null) {
+//            orderDTO.setStatus(status);
+//            updateOrder(id, orderDTO);
+//        }
+//    }
     @Override
     public void updateOrderStatus(int id, String status) {
         OrderDTO orderDTO = getOrderById(id);
@@ -188,6 +196,24 @@ public class OrderServiceImpl implements OrderService {
             orderDTO.setStatus(status);
             updateOrder(id, orderDTO);
         }
+        //Trở thành thành viên Thân thiết sau 10 đơn hàng hoặc tổng giá trị mua hàng đạt 10 triệu đồng.
+        //Trở thành thành viên VIP sau 25 đơn hàng hoặc tổng giá trị mua hàng đạt 25 triệu đồng.
+        if (status.equals("COMPLETED")) {
+            User user = orderDTO.getUser();
+            int totalOrders = orderRepository.countByUserId(user.getId());
+            float totalAmount = orderRepository.sumTotalByUserId(user.getId());
+            if (totalOrders >= 10 || totalAmount >= 10000000) {
+                if (user.getClassification() == null || user.getClassification().equals("NORMAL"))
+                    user.setClassification("LOYAL");
+                user.setClassification("LOYAL");
+            }
+            if (totalOrders >= 25 || totalAmount >= 25000000) {
+                if (user.getClassification() == null || !user.getClassification().equals("VIP"))
+                user.setClassification("VIP");
+            }
+            userRepository.save(user);
+        }
+
     }
 
 

@@ -31,6 +31,11 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findAllByUserIdAndStatus(Integer userId, String status);
 
     List<Order> findByStatus(String status);
+    @Query("SELECT COUNT(o) FROM Order o WHERE o.user.id = :id AND o.status = 'COMPETED'")
+    int countByUserId(Integer id);
+    @Query("SELECT SUM(o.total) FROM Order o WHERE o.user.id = :id")
+    float sumTotalByUserId(Integer id);
+
 
 //    Collection<Object> findAllByUserIdAndStatus(Integer userId, String status);
 //    Optional<Order> findByUserId(Integer userId);
