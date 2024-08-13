@@ -15,11 +15,13 @@ public class OrderDetailDTO {
     private Integer productId;
     private Integer quantity;
     private Integer price;
+    private Integer hasReview;
     private String image;
     private Float weight;
     private String productName;
     private Integer totalPrice;
     private Integer stock;
+
 
 //    private Date createdAt;
 //    private Date updatedAt;

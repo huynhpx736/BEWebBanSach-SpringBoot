@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-08-06T11:03:28+0700",
+    date = "2024-08-13T12:14:19+0700",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
@@ -25,6 +25,8 @@ public class ReviewMapperImpl implements ReviewMapper {
 
         reviewDTO.setProductId( reviewProductId( review ) );
         reviewDTO.setUserId( reviewUserId( review ) );
+        reviewDTO.setUserName( reviewUserFullname( review ) );
+        reviewDTO.setUserAvatar( reviewUserAvatar( review ) );
         reviewDTO.setId( review.getId() );
         reviewDTO.setRating( review.getRating() );
         reviewDTO.setComment( review.getComment() );
@@ -77,5 +79,35 @@ public class ReviewMapperImpl implements ReviewMapper {
             return null;
         }
         return id;
+    }
+
+    private String reviewUserFullname(Review review) {
+        if ( review == null ) {
+            return null;
+        }
+        User user = review.getUser();
+        if ( user == null ) {
+            return null;
+        }
+        String fullname = user.getFullname();
+        if ( fullname == null ) {
+            return null;
+        }
+        return fullname;
+    }
+
+    private String reviewUserAvatar(Review review) {
+        if ( review == null ) {
+            return null;
+        }
+        User user = review.getUser();
+        if ( user == null ) {
+            return null;
+        }
+        String avatar = user.getAvatar();
+        if ( avatar == null ) {
+            return null;
+        }
+        return avatar;
     }
 }

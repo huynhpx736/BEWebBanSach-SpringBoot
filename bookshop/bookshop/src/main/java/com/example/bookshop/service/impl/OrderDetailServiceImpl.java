@@ -40,6 +40,13 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     private OrderDetailMapper orderDetailMapper;
 
     @Override
+    public void markItemHasReview(int id) {
+        OrderDetail orderDetail = orderDetailRepository.findById(id).orElseThrow(() -> new RuntimeException("Order detail not found"));
+        orderDetail.setHasReview(1);
+        orderDetailRepository.save(orderDetail);
+    }
+
+    @Override
     public List<OrderDetailDTO> getAllOrderDetails() {
         return orderDetailRepository.findAll().stream()
                 .map(orderDetailMapper::toDTO)
@@ -193,6 +200,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
                         orderDetail.getProduct().getId(),
                         orderDetail.getQuantity(),
                         orderDetail.getPrice(),
+                        orderDetail.getHasReview(),
+
 //                        orderDetail.getProduct().getPrice(),
                         orderDetail.getProduct().getImage(),
                         orderDetail.getProduct().getWeight(),

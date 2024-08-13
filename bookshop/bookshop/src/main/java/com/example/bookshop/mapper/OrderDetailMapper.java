@@ -33,6 +33,7 @@ public interface OrderDetailMapper {
     @Mapping(target = "productName", source = "orderDetail.product.title")
     @Mapping(target = "weight", source = "orderDetail.product.weight")
     @Mapping(target = "stock", source = "orderDetail.product.salesVolume")
+//    @Mapping(target = "hasReview", source = "orderDetail.hasReview")
     OrderDetailDTO toDTO(OrderDetail orderDetail);
 
     @Mapping(target = "order.id", source = "orderDetailDTO.orderId")

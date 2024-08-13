@@ -4,6 +4,7 @@ import com.example.bookshop.dto.OrderDetailDTO;
 import java.util.List;
 
 public interface OrderDetailService {
+    void markItemHasReview(int id);
     List<OrderDetailDTO> getAllOrderDetails();
     OrderDetailDTO getOrderDetailById(Integer id);
     OrderDetailDTO createOrderDetail(OrderDetailDTO orderDetailDTO);

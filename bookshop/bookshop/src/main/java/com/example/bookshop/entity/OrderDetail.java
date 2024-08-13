@@ -26,4 +26,6 @@ public class OrderDetail {
 
     private Integer quantity;
     private Integer price;
+    @Column(name = "has_review")
+    private Integer hasReview;
 }

@@ -1,6 +1,7 @@
 package com.example.bookshop.controller;
 
 import com.example.bookshop.dto.OrderDetailDTO;
+import com.example.bookshop.entity.OrderDetail;
 import com.example.bookshop.payload.ResponseData;
 import com.example.bookshop.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,16 @@ public class OrderDetailController {
 
     @Autowired
     private OrderDetailService orderDetailService;
+
+    @PutMapping("/mark-item-has-review/{id}")
+    public ResponseEntity<ResponseData> markItemHasReview(@PathVariable int id) {
+        OrderDetailDTO orderDetail = orderDetailService.getOrderDetailById(id);
+        if (orderDetail == null) {
+            return ResponseEntity.status(404).body(new ResponseData(404, "OrderDetail not found", null, false));
+        }
+        orderDetailService.markItemHasReview(id);
+        return ResponseEntity.ok(new ResponseData(200, "Item marked has review", null, true));
+    }
 
     @GetMapping("get-all")
     public ResponseEntity<ResponseData> getAllOrderDetails() {
