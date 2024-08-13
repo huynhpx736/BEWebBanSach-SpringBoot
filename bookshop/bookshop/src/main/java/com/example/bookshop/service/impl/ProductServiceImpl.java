@@ -24,6 +24,13 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
+    public List<ProductDTO> findProducts(String keyword) {
+        return productRepository.findByTitleContaining(keyword).stream()
+                .map(productMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void updatStatus(Integer id, Integer status) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));

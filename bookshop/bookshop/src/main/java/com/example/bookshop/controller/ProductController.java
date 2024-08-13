@@ -26,7 +26,11 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-
+    @GetMapping("search-by-keyword")
+    public ResponseEntity<ResponseData> getProducts(@RequestParam(required = false) String keyword) {
+        List<ProductDTO> products = productService.findProducts(keyword);
+        return ResponseEntity.ok(new ResponseData(200, "Success", products, true));
+    }
     @PutMapping("update-status/{id}")
     public ResponseEntity<ResponseData> updateStatus(@PathVariable Integer id, @RequestParam Integer status) {
         productService.updatStatus(id, status);
