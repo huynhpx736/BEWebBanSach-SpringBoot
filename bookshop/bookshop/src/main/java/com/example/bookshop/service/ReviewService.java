@@ -4,6 +4,8 @@ import com.example.bookshop.dto.ReviewDTO;
 import java.util.List;
 
 public interface ReviewService {
+
+    List<ReviewDTO> getAllReviewsByBookId(int bookId);
     List<ReviewDTO> getAllReviews();
     ReviewDTO getReviewById(int id);
     ReviewDTO createReview(ReviewDTO reviewDTO);
