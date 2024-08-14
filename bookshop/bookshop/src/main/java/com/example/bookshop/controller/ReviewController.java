@@ -15,7 +15,11 @@ public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
-
+    @GetMapping("/get-all-by-book-id/{bookId}")
+    public ResponseEntity<ResponseData> getAllReviewsByBookId(@PathVariable int bookId) {
+        List<ReviewDTO> reviews = reviewService.getAllReviewsByBookId(bookId);
+        return ResponseEntity.ok(new ResponseData(200, "Success", reviews, true));
+    }
     @GetMapping("/get-all")
     public ResponseEntity<ResponseData> getAllReviews() {
         List<ReviewDTO> reviews = reviewService.getAllReviews();

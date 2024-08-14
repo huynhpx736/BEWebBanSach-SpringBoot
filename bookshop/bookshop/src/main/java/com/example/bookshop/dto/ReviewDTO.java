@@ -13,4 +13,7 @@ public class ReviewDTO {
     private Integer userId;
     private Integer rating;
     private String comment;
+    private String userName;
+    private String userAvatar;
+
 }
