@@ -129,12 +129,14 @@
 
 package com.example.bookshop.service.impl;
 
+//import com.example.bookshop.dto.ShipperDTO;
 import com.example.bookshop.dto.UserDTO;
 import com.example.bookshop.entity.User;
 import com.example.bookshop.exception.UserNotFoundException;
 import com.example.bookshop.mapper.UserMapper;
 import com.example.bookshop.payload.Request.SignInRequest;
 import com.example.bookshop.payload.Request.SignUpRequest;
+//import com.example.bookshop.repository.ShipperRepository;
 import com.example.bookshop.repository.UserRepository;
 import com.example.bookshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,6 +155,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+//    @Autowired
+//    private ShipperRepository shipperRepository;
     @Autowired
     private UserMapper userMapper;
 
@@ -208,6 +212,43 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO loginUser(SignInRequest userLoginDTO) {
+//
+//        //nếu tìm ở user thấy thì trả về user, không thì tìm ở shipper nếu thấy thì trả về shipper
+//        User user = userRepository.findByUsername(userLoginDTO.getUsername());
+//        if (user == null) {
+//            user = userRepository.findByEmail(userLoginDTO.getUsername());
+//            if (user == null) {
+//                user = shipperRepository.findByUsername(userLoginDTO.getUsername());
+//                if (user == null) {
+//                    user = shipperRepository.findByEmail(userLoginDTO.getUsername());
+//                    if (user == null || !passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
+//                        throw new RuntimeException("Invalid username or password");
+//                    }
+//                    return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), 3, user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification());
+//                    return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), 3, null, user.getFullname(), user.getPhone(), null);
+
+//                    return new ShipperDTO(user.getId(), user.getUsername(), user.getEmail(), user.getFullname(), user.getPassword(), user.getPhone());
+//                }
+//
+//            }
+//        }
+//        if (user == null || !passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
+//            throw new RuntimeException("Invalid username or password");
+//        }
+//        return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), user.getRole(), user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification());
+
+        //nếu tìm ở user không thấy thì tìm ở shipper
+//        User user = userRepository.findByUsername(userLoginDTO.getUsername());
+//        if (user == null) {
+//            user = userRepository.findByEmail(userLoginDTO.getUsername());
+//            if (user == null || !passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
+//                throw new RuntimeException("Invalid username or password");
+//            }
+//
+//            return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), user.getRole(), user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification());
+//
+//        }
+
         User user = userRepository.findByUsername(userLoginDTO.getUsername());
         if (user == null || !passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid username or password");

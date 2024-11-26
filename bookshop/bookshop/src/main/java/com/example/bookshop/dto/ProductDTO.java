@@ -29,4 +29,6 @@ public class ProductDTO {
     private List<Tag> tags;
     private Float priority;
     private Integer status;
+    private Integer quantity_sold;
+    private String content;
 }

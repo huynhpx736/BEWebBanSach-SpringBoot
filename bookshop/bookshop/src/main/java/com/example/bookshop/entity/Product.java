@@ -72,5 +72,9 @@ public class Product {
     private Float priority;
     @Column
     private Integer status;
+    @Column
+    private Integer quantity_sold;
+    @Column
+    private String content;
 
 }

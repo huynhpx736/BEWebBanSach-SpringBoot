@@ -164,6 +164,35 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
+//        // Kiểm tra số lượng đã bán (quantity_sold)
+//        if (criteria.getMinQuantitySold() != null && criteria.getMaxQuantitySold() != null &&
+//                criteria.getMinQuantitySold() <= criteria.getMaxQuantitySold()) {
+//            if (product.getQuantity_sold() != null &&
+//                    product.getQuantity_sold() >= criteria.getMinQuantitySold() &&
+//                    product.getQuantity_sold() <= criteria.getMaxQuantitySold()) {
+//                priority += criteria.getQuantitySoldWeight();
+//            }
+//        }
+        // Kiểm tra số lượng đã bán (quantity_sold)
+        if (criteria.getMinQuantitySold() != null) {
+            if (product.getQuantity_sold() != null &&
+                    product.getQuantity_sold() >= criteria.getMinQuantitySold()) {
+                priority += criteria.getQuantitySoldWeight();
+            }
+        }
+
+        // Kiểm tra nội dung mục lục (content)
+        if (criteria.getContent() != null && !criteria.getContent().trim().isEmpty()) {
+            String content = product.getContent() != null ? product.getContent().toLowerCase().trim() : "";
+            String searchContent = criteria.getContent().toLowerCase().trim();
+            if (content.contains(searchContent)) {
+                priority += criteria.getContentWeight();
+            }
+        }
+
+
+
+
         // Set the priority in product for sorting
         product.setPriority(priority);
         return product;

@@ -196,6 +196,17 @@ public class OrderServiceImpl implements OrderService {
             orderDTO.setStatus(status);
             updateOrder(id, orderDTO);
         }
+        //nếu đơn hàng đã hoàn thành thì cập nhật lại so luong
+        if (status.equals("CANCELLED")) {
+            Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+            for (OrderDetail orderDetail : order.getOrderDetails()) {
+                orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() + orderDetail.getQuantity());
+                productRepository.save(orderDetail.getProduct());
+            }
+        }
+
+
+
         //Trở thành thành viên Thân thiết sau 10 đơn hàng hoặc tổng giá trị mua hàng đạt 10 triệu đồng.
         //Trở thành thành viên VIP sau 25 đơn hàng hoặc tổng giá trị mua hàng đạt 25 triệu đồng.
         if (status.equals("COMPLETED")) {
