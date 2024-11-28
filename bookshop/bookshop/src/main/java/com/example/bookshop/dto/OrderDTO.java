@@ -36,4 +36,6 @@ public class OrderDTO {
     private String receiverName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String cancelReason;
+    private String failureReason;
 }

@@ -56,7 +56,7 @@ public class Order {
 
     @Column(name = "cancel_reason")
     private String cancelReason;
-    @Column(name = "failed_reason")
+    @Column(name = "failure_reason")
     private String failedReason;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails;

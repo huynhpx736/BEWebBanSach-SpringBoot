@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-25T12:27:16+0700",
+    date = "2024-11-29T00:00:42+0700",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
@@ -23,6 +23,7 @@ public class OrderMapperImpl implements OrderMapper {
 
         orderDTO.setId( order.getId() );
         orderDTO.setUser( order.getUser() );
+        orderDTO.setShipper( order.getShipper() );
         orderDTO.setOrderDate( order.getOrderDate() );
         orderDTO.setStatus( order.getStatus() );
         orderDTO.setTotal( order.getTotal() );
@@ -33,6 +34,7 @@ public class OrderMapperImpl implements OrderMapper {
         orderDTO.setReceiverName( order.getReceiverName() );
         orderDTO.setCreatedAt( order.getCreatedAt() );
         orderDTO.setUpdatedAt( order.getUpdatedAt() );
+        orderDTO.setCancelReason( order.getCancelReason() );
 
         return orderDTO;
     }
@@ -47,6 +49,7 @@ public class OrderMapperImpl implements OrderMapper {
 
         order.setId( orderDTO.getId() );
         order.setUser( orderDTO.getUser() );
+        order.setShipper( orderDTO.getShipper() );
         order.setOrderDate( orderDTO.getOrderDate() );
         order.setStatus( orderDTO.getStatus() );
         order.setTotal( orderDTO.getTotal() );
@@ -57,6 +60,7 @@ public class OrderMapperImpl implements OrderMapper {
         order.setReceiverName( orderDTO.getReceiverName() );
         order.setCreatedAt( orderDTO.getCreatedAt() );
         order.setUpdatedAt( orderDTO.getUpdatedAt() );
+        order.setCancelReason( orderDTO.getCancelReason() );
 
         return order;
     }

@@ -66,7 +66,7 @@ public class ShipperServiceImpl implements ShipperService {
     }
 
     @Override
-    public List<Order> getOrdersByShipper(Long shipperId) {
+    public List<Order> getOrdersByShipper(Integer shipperId) {
         return orderRepository.findByShipperIdAndStatus(shipperId, "ASSIGNED");
     }
 
