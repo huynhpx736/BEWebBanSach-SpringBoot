@@ -14,6 +14,7 @@ import java.util.Date;
 public class OrderDTO {
     private Integer id;
     private User user;
+    private User shipper;
 //    private Integer userId;
 //    private Date orderDate;
 //    private String status;

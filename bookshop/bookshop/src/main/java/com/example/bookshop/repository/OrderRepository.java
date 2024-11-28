@@ -36,7 +36,9 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query("SELECT SUM(o.total) FROM Order o WHERE o.user.id = :id")
     float sumTotalByUserId(Integer id);
 
+    List<Order> findByStatusInAndShipperIsNull(List<String> pending);
 
+    List<Order> findByShipperIdAndStatus(Long shipperId, String status);
 //    Collection<Object> findAllByUserIdAndStatus(Integer userId, String status);
 //    Optional<Order> findByUserId(Integer userId);
 //    Optional<Order> findActiveOrderByUserId(Integer userId);

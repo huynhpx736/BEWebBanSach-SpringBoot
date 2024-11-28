@@ -210,6 +210,14 @@ public class OrderServiceImpl implements OrderService {
         //Trở thành thành viên Thân thiết sau 10 đơn hàng hoặc tổng giá trị mua hàng đạt 10 triệu đồng.
         //Trở thành thành viên VIP sau 25 đơn hàng hoặc tổng giá trị mua hàng đạt 25 triệu đồng.
         if (status.equals("COMPLETED")) {
+            //cập nhat lai so luong đã bán quantity_sold cua product
+            Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+            for (OrderDetail orderDetail : order.getOrderDetails()) {
+                orderDetail.getProduct().setQuantity_sold(orderDetail.getProduct().getQuantity_sold() + orderDetail.getQuantity());
+                productRepository.save(orderDetail.getProduct());
+            }
+
+            //cập nhật lại classification của user
             User user = orderDTO.getUser();
             int totalOrders = orderRepository.countByUserId(user.getId());
             float totalAmount = orderRepository.sumTotalByUserId(user.getId());

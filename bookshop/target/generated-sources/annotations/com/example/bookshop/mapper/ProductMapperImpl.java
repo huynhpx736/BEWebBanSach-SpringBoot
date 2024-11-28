@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-08-13T09:44:48+0700",
+    date = "2024-11-25T12:27:16+0700",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 19.0.2 (Oracle Corporation)"
 )
 @Component
@@ -52,6 +52,8 @@ public class ProductMapperImpl implements ProductMapper {
         }
         productDTO.setPriority( product.getPriority() );
         productDTO.setStatus( product.getStatus() );
+        productDTO.setQuantity_sold( product.getQuantity_sold() );
+        productDTO.setContent( product.getContent() );
 
         return productDTO;
     }
@@ -88,6 +90,8 @@ public class ProductMapperImpl implements ProductMapper {
         }
         product.setPriority( productDTO.getPriority() );
         product.setStatus( productDTO.getStatus() );
+        product.setQuantity_sold( productDTO.getQuantity_sold() );
+        product.setContent( productDTO.getContent() );
 
         return product;
     }
