@@ -17,7 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     <Optional> Order FindOrderIsPending(Integer userId);
 //    Order FindOrderIsPending(Integer userId);
 
-
+//    <List> Order findById(Integer id);
 
 
 //    Optional<Order> findByUserIdAndStatus(Integer userId, String status);

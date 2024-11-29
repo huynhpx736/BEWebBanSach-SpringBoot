@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+
     @Autowired
     private OrderRepository orderRepository;
 
@@ -39,6 +40,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderDetailMapper orderDetailMapper;
     @Autowired
     private ProductRepository productRepository;
+
+//    Order o = orderRepository.findById(1).orElse(null);
+//    System.out.println("Order: " + o);
 
     @Override
     public void cancelOrder(int id, String status) {
@@ -96,7 +100,10 @@ public class OrderServiceImpl implements OrderService {
 //            Product product = orderDetail.getProduct();
 //            product.setSalesVolume(product.getSalesVolume() -  orderDetail.getQuantity());
 //            productRepository.save(product);
+            System.out.println("Con lai truoc:" +orderDetail.getProduct().getSalesVolume());
+
             orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() - orderDetail.getQuantity());
+            System.out.println("Con lai sau:" +orderDetail.getProduct().getSalesVolume());
             productRepository.save(orderDetail.getProduct());
         }
 
@@ -181,24 +188,24 @@ public class OrderServiceImpl implements OrderService {
 //        return updateOrder(createdOrder.getId(), createdOrder);
 //    }
 
-//    @Override
-//    public void updateOrderStatus(int id, String status) {
+    @Override
+    public void updateOrderStatus(int id, String status) {
+
+        Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+        order.setStatus(status);
+        orderRepository.save(order);
+
+
 //        OrderDTO orderDTO = getOrderById(id);
 //        if (orderDTO != null) {
 //            orderDTO.setStatus(status);
 //            updateOrder(id, orderDTO);
 //        }
-//    }
-    @Override
-    public void updateOrderStatus(int id, String status) {
-        OrderDTO orderDTO = getOrderById(id);
-        if (orderDTO != null) {
-            orderDTO.setStatus(status);
-            updateOrder(id, orderDTO);
-        }
-        //nếu đơn hàng đã hoàn thành thì cập nhật lại so luong
+
+        //nếu đơn hàng đã huy thì cập nhật lại so luong
         if (status.equals("CANCELLED")) {
-            Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+//            Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+//            System.out.println("Order: " + order);
             for (OrderDetail orderDetail : order.getOrderDetails()) {
                 orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() + orderDetail.getQuantity());
                 productRepository.save(orderDetail.getProduct());
@@ -210,15 +217,19 @@ public class OrderServiceImpl implements OrderService {
         //Trở thành thành viên Thân thiết sau 10 đơn hàng hoặc tổng giá trị mua hàng đạt 10 triệu đồng.
         //Trở thành thành viên VIP sau 25 đơn hàng hoặc tổng giá trị mua hàng đạt 25 triệu đồng.
         if (status.equals("COMPLETED")) {
-            //cập nhat lai so luong đã bán quantity_sold cua product
-            Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
+//            Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
             for (OrderDetail orderDetail : order.getOrderDetails()) {
+                //cập nhat lai so luong còn lại sale_volume cua product sau khi hoàn thành đơn hàng
+                orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() - orderDetail.getQuantity());
+
+                //cập nhat lai so luong đã bán quantity_sold cua product sau khi hoàn thành đơn hàng
                 orderDetail.getProduct().setQuantity_sold(orderDetail.getProduct().getQuantity_sold() + orderDetail.getQuantity());
                 productRepository.save(orderDetail.getProduct());
             }
 
             //cập nhật lại classification của user
-            User user = orderDTO.getUser();
+//            User user = orderDTO.getUser();
+            User user = order.getUser();
             int totalOrders = orderRepository.countByUserId(user.getId());
             float totalAmount = orderRepository.sumTotalByUserId(user.getId());
             if (totalOrders >= 10 || totalAmount >= 10000000) {
@@ -234,6 +245,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
     }
+
 
 
 }

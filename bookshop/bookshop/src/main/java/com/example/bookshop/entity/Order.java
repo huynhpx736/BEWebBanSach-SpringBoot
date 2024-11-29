@@ -57,7 +57,10 @@ public class Order {
     @Column(name = "cancel_reason")
     private String cancelReason;
     @Column(name = "failure_reason")
-    private String failedReason;
+    private String failureReason;
+    @Column(name = "shipper_note")
+    private String shipperNote;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+//    @ToString.Exclude // Ngăn vòng lặp
     private List<OrderDetail> orderDetails;
 }

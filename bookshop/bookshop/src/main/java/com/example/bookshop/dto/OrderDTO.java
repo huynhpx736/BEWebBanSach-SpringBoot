@@ -15,17 +15,6 @@ public class OrderDTO {
     private Integer id;
     private User user;
     private User shipper;
-//    private Integer userId;
-//    private Date orderDate;
-//    private String status;
-//    private Integer total;
-//    private Integer shippingFee;
-//    private Integer discount;
-//    private String receiverPhone;
-//    private String receiverAddress;
-//    private String receiverName;
-//    private Date createdAt;
-//    private Date updatedAt;
     private LocalDateTime orderDate;
     private String status;
     private Float total;
@@ -38,4 +27,5 @@ public class OrderDTO {
     private LocalDateTime updatedAt;
     private String cancelReason;
     private String failureReason;
+    private String shipperNote;
 }

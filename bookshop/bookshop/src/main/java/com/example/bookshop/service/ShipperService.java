@@ -1,5 +1,6 @@
 package com.example.bookshop.service;
 
+import com.example.bookshop.dto.OrderDTO;
 import com.example.bookshop.entity.Order;
 
 import java.util.List;
@@ -7,9 +8,11 @@ import java.util.List;
 
 
 public interface ShipperService {
-    List<Order> getAvailableOrders();
+    List<OrderDTO> getAvailableOrders();
     boolean acceptOrder(Integer orderId, Integer shipperId);
-    boolean reportFailedDelivery(Integer orderId, String reason);
+    List<OrderDTO> getOrdersByShipperAndStatus(Integer shipperId, String status);
+//    List<OrderDTO> getOrdersByShipperAndStatus(Integer shipperId, String status);
+    boolean reportFailedDelivery(Integer orderId, String reason, String note);
 
-    List<Order> getOrdersByShipper(Integer shipperId);
+    List<OrderDTO> getOrdersByShipper(Integer shipperId);
 }

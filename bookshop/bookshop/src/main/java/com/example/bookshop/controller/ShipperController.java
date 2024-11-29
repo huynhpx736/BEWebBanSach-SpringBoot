@@ -1,6 +1,8 @@
 package com.example.bookshop.controller;
 
+import com.example.bookshop.dto.OrderDTO;
 import com.example.bookshop.entity.Order;
+import com.example.bookshop.payload.ResponseData;
 import com.example.bookshop.service.ShipperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,35 +17,50 @@ public class ShipperController {
 
 
     @GetMapping("/orders/available")
-    public ResponseEntity<List<Order>> getAvailableOrders() {
-        List<Order> availableOrders = shipperService.getAvailableOrders();
-        return ResponseEntity.ok(availableOrders);
+    public ResponseEntity<ResponseData> getAvailableOrders() {
+        List<OrderDTO> availableOrders = shipperService.getAvailableOrders();
+        return ResponseEntity.ok(new ResponseData(200, "Success", availableOrders, true));
     }
 
 
     @PutMapping("/orders/accept")
-    public ResponseEntity<String> acceptOrder(
+    public ResponseEntity<ResponseData> acceptOrder(
             @RequestParam Integer orderId,
             @RequestParam Integer shipperId) {
         boolean isAccepted = shipperService.acceptOrder(orderId, shipperId);
         if (isAccepted) {
-            return ResponseEntity.ok("Order accepted successfully.");
+            return ResponseEntity.ok(new ResponseData(200, "Order accepted successfully.", null, true));
         } else {
-            return ResponseEntity.badRequest().body("Failed to accept the order.");
+            return ResponseEntity.badRequest().body(new ResponseData(400, "Failed to accept the order.", null, false));
         }
+//        if (isAccepted) {
+//            return ResponseEntity.ok("Order accepted successfully.");
+//        } else {
+//            return ResponseEntity.badRequest().body("Failed to accept the order.");
+//        }
     }
 
+
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getOrdersByShipper(@RequestParam Integer shipperId) {
-        List<Order> orders = shipperService.getOrdersByShipper(shipperId);
+    public ResponseEntity<ResponseData> getOrdersByShipper(@RequestParam Integer shipperId) {
+        List<OrderDTO> orders = shipperService.getOrdersByShipper(shipperId);
+        return ResponseEntity.ok(new ResponseData(200, "Success", orders, true));
+    }
+    @GetMapping("/orders-by-id-and-status")
+    public ResponseEntity<List<OrderDTO>> getOrdersByShipperAndStatus(
+            @RequestParam Integer shipperId,
+            @RequestParam String status) {
+        List<OrderDTO> orders = shipperService.getOrdersByShipperAndStatus(shipperId, status);
         return ResponseEntity.ok(orders);
     }
 
     @PostMapping("/orders/report-failed/{orderId}")
     public ResponseEntity<String> reportFailedDelivery(
             @PathVariable Integer orderId,
-            @RequestParam String reason) {
-        boolean isReported = shipperService.reportFailedDelivery(orderId, reason);
+            @RequestParam String reason,
+            @RequestParam String note
+    ) {
+        boolean isReported = shipperService.reportFailedDelivery(orderId, reason, note);
         if (isReported) {
             return ResponseEntity.ok("Reported failed delivery successfully.");
         } else {
