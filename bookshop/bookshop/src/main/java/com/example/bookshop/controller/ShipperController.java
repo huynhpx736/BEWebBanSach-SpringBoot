@@ -41,17 +41,17 @@ public class ShipperController {
     }
 
 
-    @GetMapping("/orders")
+    @GetMapping("/all-orders-by-shipperid ")
     public ResponseEntity<ResponseData> getOrdersByShipper(@RequestParam Integer shipperId) {
-        List<OrderDTO> orders = shipperService.getOrdersByShipper(shipperId);
+        List<OrderDTO> orders = shipperService.getAllOrdersByShipper(shipperId);
         return ResponseEntity.ok(new ResponseData(200, "Success", orders, true));
     }
-    @GetMapping("/orders-by-id-and-status")
-    public ResponseEntity<List<OrderDTO>> getOrdersByShipperAndStatus(
+    @GetMapping("/orders-by-shipperid-and-status")
+    public ResponseEntity<ResponseData> getOrdersByShipperAndStatus(
             @RequestParam Integer shipperId,
             @RequestParam String status) {
         List<OrderDTO> orders = shipperService.getOrdersByShipperAndStatus(shipperId, status);
-        return ResponseEntity.ok(orders);
+        return ResponseEntity.ok(new ResponseData(200, "Success", orders, true));
     }
 
     @PostMapping("/orders/report-failed/{orderId}")

@@ -49,6 +49,10 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.findById(id).ifPresent(order -> {
             order.setStatus(status);
             orderRepository.save(order);
+            for (OrderDetail orderDetail : order.getOrderDetails()) {
+                orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() + orderDetail.getQuantity());
+                productRepository.save(orderDetail.getProduct());
+            }
         });
     }
 

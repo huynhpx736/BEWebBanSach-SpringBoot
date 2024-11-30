@@ -14,5 +14,5 @@ public interface ShipperService {
 //    List<OrderDTO> getOrdersByShipperAndStatus(Integer shipperId, String status);
     boolean reportFailedDelivery(Integer orderId, String reason, String note);
 
-    List<OrderDTO> getOrdersByShipper(Integer shipperId);
+    List<OrderDTO> getAllOrdersByShipper(Integer shipperId);
 }

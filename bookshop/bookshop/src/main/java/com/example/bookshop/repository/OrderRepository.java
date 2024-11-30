@@ -39,6 +39,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByStatusInAndShipperIsNull(List<String> pending);
 
     List<Order> findByShipperIdAndStatus(Integer shipperId, String status);
+
+    List<Order> findAllByShipperId(Integer shipperId);
+
+    List<Order> findAllByShipperIdAndStatus(Integer shipperId, String status);
 //    Collection<Object> findAllByUserIdAndStatus(Integer userId, String status);
 //    Optional<Order> findByUserId(Integer userId);
 //    Optional<Order> findActiveOrderByUserId(Integer userId);

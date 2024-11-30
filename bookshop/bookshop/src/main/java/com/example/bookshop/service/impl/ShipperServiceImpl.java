@@ -68,7 +68,7 @@ public class ShipperServiceImpl implements ShipperService {
     public List<OrderDTO> getOrdersByShipperAndStatus(Integer shipperId, String status) {
 //        return orderRepository.findAllByShipperIdAndStatus(shipperId, status).stream()
 //                .map(OrderDTO::toDTO)
-        return orderRepository.findAllByUserIdAndStatus(shipperId, status).stream()
+        return orderRepository.findAllByShipperIdAndStatus(shipperId, status).stream()
 
                 .map(orderMapper::toDTO)
                 .collect(Collectors.toList());
@@ -94,8 +94,8 @@ public class ShipperServiceImpl implements ShipperService {
     }
 
     @Override
-    public List<OrderDTO> getOrdersByShipper(Integer shipperId) {
-        return orderRepository.findByShipperIdAndStatus(shipperId, "SHIPPING").stream()
+    public List<OrderDTO> getAllOrdersByShipper(Integer shipperId) {
+        return orderRepository.findAllByShipperId(shipperId).stream()
                 .map(orderMapper::toDTO)
                 .collect(Collectors.toList());
     }
