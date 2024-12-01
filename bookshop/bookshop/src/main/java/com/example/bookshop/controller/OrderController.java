@@ -20,6 +20,11 @@ public class OrderController {
 
     @Autowired
     private OrderDetailService orderDetailService;
+    @GetMapping("cancel-by-admin/{id}")
+    public ResponseEntity<ResponseData> cancelOrderByAdmin(@PathVariable int id, @RequestParam String cancelReason, @RequestParam String note) {
+        orderService.cancelOrderByAdmin(id, cancelReason, note);
+        return ResponseEntity.ok(new ResponseData(200, "Order is cancel because"+cancelReason, null, true));
+    }
     @PostMapping("/place-order")
     public ResponseEntity<ResponseData> placeOrder(@RequestParam Integer userId, @RequestParam String receiverPhone, @RequestParam String receiverAddress, @RequestParam String receiverName, @RequestParam Float shippingFee, @RequestParam Float discount, @RequestParam Float total) {
         orderService.placeOrder(userId, receiverPhone, receiverAddress, receiverName, shippingFee, discount, total);
@@ -43,11 +48,7 @@ public class OrderController {
         return ResponseEntity.ok(new ResponseData(200, "Order status updated", null, true));
     }
 
-    @GetMapping("cancel/{id}")
-    public ResponseEntity<ResponseData> cancelOrder(@PathVariable int id, @RequestParam String status) {
-        orderService.cancelOrder(id, status);
-        return ResponseEntity.ok(new ResponseData(200, "Order is "+status, null, true));
-    }
+
 
     @GetMapping("get-by-user-and-status")
     public ResponseEntity<ResponseData> getOrderByUserAndStatus(@RequestParam Integer userId, @RequestParam String status) {
@@ -98,9 +99,4 @@ public class OrderController {
         return ResponseEntity.ok(new ResponseData(200, "Order deleted", null, true));
     }
 
-//    @PostMapping("/place-order")
-//    public ResponseEntity<ResponseData> placeOrder(@RequestParam Integer userId, @RequestParam String receiverPhone, @RequestParam String receiverAddress, @RequestParam String receiverName) {
-//        orderDetailService.placeOrder(userId, receiverPhone, receiverAddress, receiverName);
-//        return ResponseEntity.ok(new ResponseData(200, "Order placed", null, true));
-//    }
 }

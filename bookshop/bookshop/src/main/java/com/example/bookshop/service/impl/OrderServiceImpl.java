@@ -45,14 +45,17 @@ public class OrderServiceImpl implements OrderService {
 //    System.out.println("Order: " + o);
 
     @Override
-    public void cancelOrder(int id, String status) {
+    public void cancelOrderByAdmin(int id, String cancelReason, String note) {
         orderRepository.findById(id).ifPresent(order -> {
-            order.setStatus(status);
+            order.setStatus("CANCELLED");
+            order.setCancelReason(cancelReason);
+            order.setNote(note);
             orderRepository.save(order);
-            for (OrderDetail orderDetail : order.getOrderDetails()) {
-                orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() + orderDetail.getQuantity());
-                productRepository.save(orderDetail.getProduct());
-            }
+            //bình thường cập nhật lại số lượng của product sau khi hủy đơn hàng nhưng admin hủy thì kho hàng không thay đổi
+//            for (OrderDetail orderDetail : order.getOrderDetails()) {
+//                orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() + orderDetail.getQuantity());
+//                productRepository.save(orderDetail.getProduct());
+//            }
         });
     }
 

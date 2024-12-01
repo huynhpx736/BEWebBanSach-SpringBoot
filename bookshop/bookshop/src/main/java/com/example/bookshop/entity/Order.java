@@ -60,6 +60,8 @@ public class Order {
     private String failureReason;
     @Column(name = "shipper_note")
     private String shipperNote;
+    @Column(name = "note")
+    private String note;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 //    @ToString.Exclude // Ngăn vòng lặp
     private List<OrderDetail> orderDetails;

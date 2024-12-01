@@ -28,4 +28,5 @@ public class OrderDTO {
     private String cancelReason;
     private String failureReason;
     private String shipperNote;
+    private String note;
 }
