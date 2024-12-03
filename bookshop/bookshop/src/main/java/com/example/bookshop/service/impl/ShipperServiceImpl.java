@@ -80,15 +80,12 @@ public class ShipperServiceImpl implements ShipperService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
 
-        // Kiểm tra trạng thái order có phù hợp để báo cáo
-//        if (!"ASSIGNED".equals(order.getStatus()) && !"SHIPPING".equals(order.getStatus())) {
-//            throw new IllegalArgumentException("Cannot report failed delivery for this order.");
-//        }
-
         // Cập nhật trạng thái và lý do thất bại
         order.setStatus("FAILED");
         order.setFailureReason(reason);
-        order.setShipperNote(note);
+        if (note != null && !note.isEmpty()) {
+            order.setShipperNote(note);
+        }
         orderRepository.save(order);
         return true;
     }
