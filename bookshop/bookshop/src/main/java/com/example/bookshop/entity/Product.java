@@ -76,5 +76,7 @@ public class Product {
     private Integer quantity_sold;
     @Column
     private String content;
+    @Column
+    private String topic;
 
 }

@@ -49,7 +49,10 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.findById(id).ifPresent(order -> {
             order.setStatus("CANCELLED");
             order.setCancelReason(cancelReason);
-            order.setNote(note);
+            //nếu note không rỗng hoặc không null thì lưu lại
+            if (note != null && !note.isEmpty()) {
+                order.setNote(note);
+            }
             orderRepository.save(order);
             //bình thường cập nhật lại số lượng của product sau khi hủy đơn hàng nhưng admin hủy thì kho hàng không thay đổi
 //            for (OrderDetail orderDetail : order.getOrderDetails()) {

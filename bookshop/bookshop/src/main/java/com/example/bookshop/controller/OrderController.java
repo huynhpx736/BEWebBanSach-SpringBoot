@@ -20,7 +20,20 @@ public class OrderController {
 
     @Autowired
     private OrderDetailService orderDetailService;
-    @GetMapping("cancel-by-admin/{id}")
+//    @PostMapping("/orders/report-failed/{orderId}")
+//    public ResponseEntity<String> reportFailedDelivery(
+//            @PathVariable Integer orderId,
+//            @RequestParam String reason,
+//            @RequestParam String note
+//    ) {
+//        boolean isReported = shipperService.reportFailedDelivery(orderId, reason, note);
+//        if (isReported) {
+//            return ResponseEntity.ok("Reported failed delivery successfully.");
+//        } else {
+//            return ResponseEntity.badRequest().body("Failed to report delivery failure.");
+//        }
+//    }
+    @PostMapping("cancel-by-admin/{id}")
     public ResponseEntity<ResponseData> cancelOrderByAdmin(@PathVariable int id, @RequestParam String cancelReason, @RequestParam String note) {
         orderService.cancelOrderByAdmin(id, cancelReason, note);
         return ResponseEntity.ok(new ResponseData(200, "Order is cancel because"+cancelReason, null, true));

@@ -31,4 +31,5 @@ public class ProductDTO {
     private Integer status;
     private Integer quantity_sold;
     private String content;
+    private String topic;
 }
