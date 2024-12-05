@@ -40,6 +40,7 @@ public class ProductSearchCriteria {
     private String title;
     private String author;
     private String category;
+    private String topic;
     private String publisher;
     private Integer publicationYear;
     private String tag;
@@ -51,6 +52,7 @@ public class ProductSearchCriteria {
     private Float titleWeight;
     private Float authorWeight;
     private Float categoryWeight;
+    private Float topicWeight;
     private Float publisherWeight;
     private Float yearWeight;
     private Float tagWeight;

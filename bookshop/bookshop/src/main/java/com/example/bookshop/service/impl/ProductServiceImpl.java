@@ -119,6 +119,14 @@ public class ProductServiceImpl implements ProductService {
                 priority += criteria.getCategoryWeight();
             }
         }
+        // Check topic
+        if (criteria.getTopic() != null && !criteria.getTopic().trim().isEmpty()) {
+            String searchTopic = criteria.getTopic().toLowerCase().trim();
+            String topic = product.getTopic() != null ? product.getTopic().toLowerCase().trim() : "";
+            if (topic.contains(searchTopic)) {
+                priority += criteria.getTopicWeight();
+            }
+        }
 
         // Check publisher
         if (criteria.getPublisher() != null && !criteria.getPublisher().trim().isEmpty()) {
