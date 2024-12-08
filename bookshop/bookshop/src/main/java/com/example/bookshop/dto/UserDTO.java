@@ -17,5 +17,6 @@ public class UserDTO {
     private String fullname;
     private String phone;
     private String classification;
+    private Integer active;
 
 }

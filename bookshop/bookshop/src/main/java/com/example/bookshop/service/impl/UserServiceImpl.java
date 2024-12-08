@@ -165,6 +165,32 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    public void updateActive(int id, int activeStatus) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            user.get().setActive(activeStatus);
+            userRepository.save(user.get());
+        }
+    }
+
+    @Override
+    public List<User> getAllUsersByRole(int role) {
+        if (role<1 || role>3) {
+            throw new RuntimeException("Invalid role");
+        }
+        return userRepository.findAllByRole(role);
+    }
+
+    @Override
+    public void updateAvatar(int id, String avatar) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            user.get().setAvatar(avatar);
+            userRepository.save(user.get());
+        }
+    }
+
+    @Override
     public void updateClassifications(int id, String classifications) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
@@ -201,60 +227,30 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userRegistrationDTO.getEmail());
         user.setFullname(userRegistrationDTO.getFullname());
         user.setPhone(userRegistrationDTO.getPhone());
-        user.setRole(1); // Set default role to 1 (e.g., regular user)
+        user.setRole(userRegistrationDTO.getRole());
         user.setAvatar("defaultAvatar.jpg");
         user.setClassification("NORMAL");
+        user.setActive(1);
 
         userRepository.save(user);
 
-        return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), user.getRole(), user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification());
+        return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), user.getRole(), user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification(), user.getActive());
     }
 
     @Override
     public UserDTO loginUser(SignInRequest userLoginDTO) {
-//
-//        //nếu tìm ở user thấy thì trả về user, không thì tìm ở shipper nếu thấy thì trả về shipper
-//        User user = userRepository.findByUsername(userLoginDTO.getUsername());
-//        if (user == null) {
-//            user = userRepository.findByEmail(userLoginDTO.getUsername());
-//            if (user == null) {
-//                user = shipperRepository.findByUsername(userLoginDTO.getUsername());
-//                if (user == null) {
-//                    user = shipperRepository.findByEmail(userLoginDTO.getUsername());
-//                    if (user == null || !passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
-//                        throw new RuntimeException("Invalid username or password");
-//                    }
-//                    return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), 3, user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification());
-//                    return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), 3, null, user.getFullname(), user.getPhone(), null);
-
-//                    return new ShipperDTO(user.getId(), user.getUsername(), user.getEmail(), user.getFullname(), user.getPassword(), user.getPhone());
-//                }
-//
-//            }
-//        }
-//        if (user == null || !passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
-//            throw new RuntimeException("Invalid username or password");
-//        }
-//        return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), user.getRole(), user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification());
-
-        //nếu tìm ở user không thấy thì tìm ở shipper
-//        User user = userRepository.findByUsername(userLoginDTO.getUsername());
-//        if (user == null) {
-//            user = userRepository.findByEmail(userLoginDTO.getUsername());
-//            if (user == null || !passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
-//                throw new RuntimeException("Invalid username or password");
-//            }
-//
-//            return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), user.getRole(), user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification());
-//
-//        }
-
         User user = userRepository.findByUsername(userLoginDTO.getUsername());
+        if (user == null) {
+            user = userRepository.findByEmail(userLoginDTO.getUsername());
+        }
         if (user == null || !passwordEncoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid username or password");
         }
+        if (user.getActive() == 0) {
+            throw new RuntimeException("User is inactive");
+        }
 
-        return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), user.getRole(), user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification());
+        return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), user.getRole(), user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification(), user.getActive());
     }
 
     @Override

@@ -35,4 +35,5 @@ public class User {
     private String fullname;
     private String phone;
     private String classification;
+    private Integer active;
 }

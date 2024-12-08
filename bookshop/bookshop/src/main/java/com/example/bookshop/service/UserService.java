@@ -8,6 +8,7 @@ import com.example.bookshop.payload.Request.SignUpRequest;
 import java.util.List;
 
 public interface UserService {
+    void updateActive(int id, int activeStatus);
     List<User> getAllUsersByRole(int role);
     void updateAvatar(int id, String avatar);
     void updateClassifications(int id, String classifications);

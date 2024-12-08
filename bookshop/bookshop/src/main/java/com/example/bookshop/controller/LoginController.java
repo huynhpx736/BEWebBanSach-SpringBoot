@@ -31,7 +31,7 @@ public class LoginController {
     public ResponseData loginUser(@RequestBody SignInRequest signInRequest) {
         try {
             UserDTO userDTO = userService.loginUser(signInRequest);
-            return new ResponseData(200, "Login successful", userDTO, true);
+            return new ResponseData(200, "Login successfully", userDTO, true);
         } catch (Exception e) {
             return new ResponseData(400, e.getMessage(), null, false);
         }

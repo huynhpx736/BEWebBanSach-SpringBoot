@@ -1,6 +1,7 @@
 package com.example.bookshop.controller;
 
 import com.example.bookshop.dto.UserDTO;
+import com.example.bookshop.entity.User;
 import com.example.bookshop.payload.ResponseData;
 import com.example.bookshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,17 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @PutMapping("/update-active")
+    public ResponseEntity<ResponseData> updateActive(@RequestParam int id, @RequestParam int activeStatus) {
+        userService.updateActive(id, activeStatus);
+        return ResponseEntity.ok(new ResponseData(200, "Active status updated", null, true));
+    }
+    @GetMapping("/get-all-by-role")
+    public ResponseEntity<ResponseData> getAllUsersByRole(@RequestParam int role) {
+        List<User> users = userService.getAllUsersByRole(role);
+        return ResponseEntity.ok(new ResponseData(200, "Success", users, true));
+    }
 
     @PutMapping("/update-classifications")
     public ResponseEntity<ResponseData> updateClassifications(@RequestParam int id, @RequestParam String classifications) {
