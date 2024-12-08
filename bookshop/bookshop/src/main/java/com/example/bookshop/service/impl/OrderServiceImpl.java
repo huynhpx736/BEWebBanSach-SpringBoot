@@ -41,9 +41,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductRepository productRepository;
 
-//    Order o = orderRepository.findById(1).orElse(null);
-//    System.out.println("Order: " + o);
-
     @Override
     public void cancelOrderByAdmin(int id, String cancelReason, String note) {
         orderRepository.findById(id).ifPresent(order -> {
@@ -79,8 +76,6 @@ public class OrderServiceImpl implements OrderService {
         if (order == null) {
             throw new RuntimeException("No active order found for user");
         }
-
-//            .orElseThrow(() -> new RuntimeException("No active order found for user"));
 
         order.setUser(user);
         order.setShippingFee(shippingFee);

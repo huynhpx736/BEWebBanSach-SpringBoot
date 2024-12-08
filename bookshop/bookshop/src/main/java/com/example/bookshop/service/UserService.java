@@ -8,6 +8,8 @@ import com.example.bookshop.payload.Request.SignUpRequest;
 import java.util.List;
 
 public interface UserService {
+    List<User> getAllUsersByRole(int role);
+    void updateAvatar(int id, String avatar);
     void updateClassifications(int id, String classifications);
     void changePassword(int id, String oldPassword, String newPassword );
     UserDTO registerUser(SignUpRequest userRegistrationDTO);

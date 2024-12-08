@@ -2,6 +2,7 @@ package com.example.bookshop.service.impl;
 
 
 import com.example.bookshop.dto.OrderDTO;
+import com.example.bookshop.dto.UserDTO;
 import com.example.bookshop.entity.Order;
 import com.example.bookshop.entity.User;
 import com.example.bookshop.exception.ResourceNotFoundException;
@@ -26,6 +27,13 @@ public class ShipperServiceImpl implements ShipperService {
     private UserRepository userRepository;
     @Autowired
     private OrderMapper orderMapper;
+
+//    @Override
+//    public List<User> getAllShippers() {
+//        return userRepository.findAllByRole(3).stream()
+//                .map(UserDTO::toDTO)
+//                .collect(Collectors.toList());
+//    }
 
     @Override
     public List<OrderDTO> getAvailableOrders() {
