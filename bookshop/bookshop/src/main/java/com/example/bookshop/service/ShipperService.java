@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface ShipperService {
 //    List<UserDTO> getAllShippers();
+    //sửa ghi chú shipper cho don hang
+    boolean updateNoteShipper(Integer orderId, String shipperNote);
     List<OrderDTO> getAvailableOrders();
     boolean acceptOrder(Integer orderId, Integer shipperId);
     List<OrderDTO> getOrdersByShipperAndStatus(Integer shipperId, String status);

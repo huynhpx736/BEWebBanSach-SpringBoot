@@ -34,9 +34,10 @@ public class OrderController {
 //        }
 //    }
     @PostMapping("cancel-by-admin/{id}")
-    public ResponseEntity<ResponseData> cancelOrderByAdmin(@PathVariable int id, @RequestParam String cancelReason, @RequestParam String note) {
+    //biến note có không bắt buộc
+    public ResponseEntity<ResponseData> cancelOrderByAdmin(@PathVariable int id, @RequestParam String cancelReason, @RequestParam(required = false) String note) {
         orderService.cancelOrderByAdmin(id, cancelReason, note);
-        return ResponseEntity.ok(new ResponseData(200, "Order is cancel because"+cancelReason, null, true));
+        return ResponseEntity.ok(new ResponseData(200, "Order is canceled", null, true));
     }
     @PostMapping("/place-order")
     public ResponseEntity<ResponseData> placeOrder(@RequestParam Integer userId, @RequestParam String receiverPhone, @RequestParam String receiverAddress, @RequestParam String receiverName, @RequestParam Float shippingFee, @RequestParam Float discount, @RequestParam Float total) {

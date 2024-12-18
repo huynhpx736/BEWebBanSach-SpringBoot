@@ -42,6 +42,17 @@ public class OrderServiceImpl implements OrderService {
     private ProductRepository productRepository;
 
     @Override
+    public boolean updateNoteOrder(int id, String note) {
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order != null) {
+            order.setNote(note);
+            orderRepository.save(order);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void cancelOrderByAdmin(int id, String cancelReason, String note) {
         orderRepository.findById(id).ifPresent(order -> {
             order.setStatus("CANCELLED");
@@ -51,6 +62,14 @@ public class OrderServiceImpl implements OrderService {
                 order.setNote(note);
             }
             orderRepository.save(order);
+            //neeusu li do là "không liên lạc được" thì cập nhật lại số lượng của product
+            if (cancelReason.equals("Không liên lạc được với khách hàng")) {
+                for (OrderDetail orderDetail : order.getOrderDetails()) {
+                    orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() + orderDetail.getQuantity());
+                    productRepository.save(orderDetail.getProduct());
+                }
+            }
+
             //bình thường cập nhật lại số lượng của product sau khi hủy đơn hàng nhưng admin hủy thì kho hàng không thay đổi
 //            for (OrderDetail orderDetail : order.getOrderDetails()) {
 //                orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() + orderDetail.getQuantity());

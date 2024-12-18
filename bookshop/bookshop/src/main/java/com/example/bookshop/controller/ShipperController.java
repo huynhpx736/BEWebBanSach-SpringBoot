@@ -16,7 +16,20 @@ public class ShipperController {
     @Autowired
     private ShipperService shipperService;
 
+    @Autowired
+    private UserService userService;
 
+    @PutMapping("/orders/update-shipperNote")
+    public ResponseEntity<ResponseData> updateNoteShipper(
+            @RequestParam Integer orderId,
+            @RequestParam String shipperNote) {
+        boolean isUpdated = shipperService.updateNoteShipper(orderId, shipperNote);
+        if (isUpdated) {
+            return ResponseEntity.ok(new ResponseData(200, "Note updated successfully.", null, true));
+        } else {
+            return ResponseEntity.badRequest().body(new ResponseData(400, "Failed to update the note.", null, false));
+        }
+    }
     @GetMapping("/orders/available")
     public ResponseEntity<ResponseData> getAvailableOrders() {
         List<OrderDTO> availableOrders = shipperService.getAvailableOrders();

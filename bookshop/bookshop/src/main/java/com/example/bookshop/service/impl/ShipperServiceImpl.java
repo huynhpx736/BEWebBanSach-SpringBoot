@@ -36,6 +36,18 @@ public class ShipperServiceImpl implements ShipperService {
 //    }
 
     @Override
+    public boolean updateNoteShipper(Integer orderId, String shipperNote) {
+        // Find the order
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
+
+        // Update the shipper note
+        order.setShipperNote(shipperNote);
+        orderRepository.save(order);
+        return true;
+    }
+
+    @Override
     public List<OrderDTO> getAvailableOrders() {
         // Fetch orders with status "PENDING" or "READY_TO_SHIP" and no assigned shipper
         return orderRepository.findByStatusInAndShipperIsNull(List.of("PENDING", "READY_TO_SHIP")).stream()
@@ -95,6 +107,8 @@ public class ShipperServiceImpl implements ShipperService {
             order.setShipperNote(note);
         }
         orderRepository.save(order);
+        //code đơn hàng tự động hủy sau 3 ngày
+
         return true;
     }
 

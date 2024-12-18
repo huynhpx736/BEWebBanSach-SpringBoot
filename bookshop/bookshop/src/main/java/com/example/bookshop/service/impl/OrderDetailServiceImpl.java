@@ -112,6 +112,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             orderDetail.setProduct(product);
             orderDetail.setQuantity(quantity);
             orderDetail.setPrice(product.getPrice());
+            orderDetail.setHasReview(0);
         } else {
             orderDetail.setQuantity(orderDetail.getQuantity() + quantity);
         }

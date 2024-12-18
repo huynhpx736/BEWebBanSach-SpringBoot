@@ -59,9 +59,7 @@ public class ProductSearchCriteria {
     private Float ratingWeight;
     private Float priceWeight;
 
-    // Mới thêm
     private Integer minQuantitySold;
-//    private Integer maxQuantitySold;
     private Float quantitySoldWeight;
     private String content;
     private Float contentWeight;
