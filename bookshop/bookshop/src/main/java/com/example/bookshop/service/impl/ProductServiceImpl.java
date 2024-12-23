@@ -49,9 +49,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> getNewestProducts() {
         //trả về danh sách 10 sản phẩm mới nhất từ database
-        return productRepository.findAll().stream()
+        return productRepository.findTop10ByOrderByCreatedAtDesc().stream()
                 .map(productMapper::toDTO)
                 .collect(Collectors.toList());
+//        return productRepository.findAll().stream()
+//                .map(productMapper::toDTO)
+//                .collect(Collectors.toList());
     }
 
     @Override

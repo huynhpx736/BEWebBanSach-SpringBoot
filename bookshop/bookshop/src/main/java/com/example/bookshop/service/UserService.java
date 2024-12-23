@@ -13,6 +13,7 @@ public interface UserService {
     void updateAvatar(int id, String avatar);
     void updateClassifications(int id, String classifications);
     void changePassword(int id, String oldPassword, String newPassword );
+    void changePasswordByEmail(String email, String newPassword);
     UserDTO registerUser(SignUpRequest userRegistrationDTO);
     UserDTO loginUser(SignInRequest signInRequest);
     User findByUsername(String username);
@@ -21,4 +22,6 @@ public interface UserService {
     UserDTO createUser(UserDTO userDTO);
     UserDTO updateUser(int id, UserDTO userDTO);
     void deleteUser(int id);
+
+    void verifyAccount(String email, String otp, Integer roleId);
 }

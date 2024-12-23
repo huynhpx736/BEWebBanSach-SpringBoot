@@ -177,17 +177,17 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             order = new Order();
 //            return null;
         }
-        //cap nhật lai gia va so luong cua tung oderdetail ngay tai luc dặt hàng so voi product
-        for (OrderDetail orderDetail : order.getOrderDetails()) {
-            orderDetail.setPrice(orderDetail.getProduct().getPrice());
-            if (orderDetail.getQuantity() > orderDetail.getProduct().getSalesVolume()) {
-                orderDetail.setQuantity(orderDetail.getProduct().getSalesVolume());
+        //neu don hang co order detail thi cap nhật lai gia va so luong cua tung oderdetail ngay tai luc dặt hàng so voi product
+        if (order.getOrderDetails() != null) {
+            for (OrderDetail orderDetail : order.getOrderDetails()) {
+                orderDetail.setPrice(orderDetail.getProduct().getPrice());
+                if (orderDetail.getQuantity() > orderDetail.getProduct().getSalesVolume()) {
+                    orderDetail.setQuantity(orderDetail.getProduct().getSalesVolume());
+                }
+                orderDetailRepository.save(orderDetail);
             }
-            orderDetailRepository.save(orderDetail);
         }
         order.setUser(user);
-
-//        order.setOrderDate(LocalDateTime.now());
         order.setStatus("PENDING");
 
         order = orderRepository.save(order);

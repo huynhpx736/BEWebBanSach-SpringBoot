@@ -17,6 +17,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @PutMapping("/update-active")
     public ResponseEntity<ResponseData> updateActive(@RequestParam int id, @RequestParam int activeStatus) {
         userService.updateActive(id, activeStatus);
@@ -36,6 +37,11 @@ public class UserController {
     @PutMapping("/change-password/{id}")
     public ResponseEntity<ResponseData> changePassword(@PathVariable int id, @RequestParam String oldPassword, @RequestParam String newPassword) {
         userService.changePassword(id, oldPassword, newPassword);
+        return ResponseEntity.ok(new ResponseData(200, "Password changed", null, true));
+    }
+    @PutMapping("/change-password-by-email")
+    public ResponseEntity<ResponseData> changePasswordByEmail(@RequestParam String email, @RequestParam String newPassword) {
+        userService.changePasswordByEmail(email, newPassword);
         return ResponseEntity.ok(new ResponseData(200, "Password changed", null, true));
     }
     @GetMapping("/get-all")

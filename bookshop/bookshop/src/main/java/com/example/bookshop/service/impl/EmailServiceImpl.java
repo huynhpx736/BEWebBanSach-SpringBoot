@@ -82,14 +82,19 @@ public class EmailServiceImpl implements EmailService {
             if (order == null) {
                 return "Order not found";
             }
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setFrom(sender);
-            mailMessage.setTo(order.getUser().getEmail());
-            mailMessage.setSubject("Thông báo từ cửa hàng sách BookShop");
+//            SimpleMailMessage mailMessage = new SimpleMailMessage();
+//            mailMessage.setFrom(sender);
+//            mailMessage.setTo(order.getUser().getEmail());
+//            mailMessage.setSubject("Thông báo từ cửa hàng sách BookShop");
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+            mimeMessageHelper.setFrom(sender, "BookShop");
+            mimeMessageHelper.setTo(order.getUser().getEmail());
+            mimeMessageHelper.setSubject("Thông báo từ cửa hàng sách BookShop");
             switch (subject) {
                 case "CONFIRMED":
-                    mailMessage.setText("Xin chào " + order.getUser().getFullname() + ",\n\n" +
-                            "Cảm ơn bạn đã đặt hàng tại BookShop. Đơn hàng của bạn đã được xác nhận.\n" +
+                    mimeMessage.setText("Xin chào " + order.getUser().getFullname() + ",\n\n" +
+                            "Cảm ơn bạn đã đặt hàng tại BookShop. Đơn hàng của bạn đã được phê duyệt và đang chuẩn bị hàng.\n" +
                                     "Mã đơn hàng: " + orderId + "\n" +
                                     "Ngày đặt hàng: " + order.getOrderDate() + "\n" +
                                     "Tổng tiền: " + order.getTotal() + " VND\n\n" +
@@ -100,19 +105,19 @@ public class EmailServiceImpl implements EmailService {
                                     "BookShop");
                     break;
                 case "SHIPPING":
-                    mailMessage.setText("Xin chào " + order.getUser().getFullname() + ",\n\n" +
-                            "Đơn hàng của bạn đã được giao cho đơn vị vận chuyển.\n" +
+                    mimeMessage.setText("Xin chào " + order.getUser().getFullname() + ",\n\n" +
+                            "Đơn hàng của bạn đang được vận chuyển.\n" +
                             "Mã đơn hàng: " + orderId + "\n" +
                             "Ngày đặt hàng: " + order.getOrderDate() + "\n" +
                             "Tổng tiền: " + order.getTotal() + " VND\n\n" +
-                            "Chúng tôi sẽ giao hàng trong thời gian sớm nhất.\n" +
+                            "Chúng tôi sẽ giao hàng trong thời gian sớm nhất. Hãy mở điện thoại và kiểm tra email thường xuyên để cập nhật tình trạng đơn hàng.\n" +
                             "Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ với chúng tôi qua email: xuanhuynh254@gmail.com " +
                             "hoặc số điện thoại 0865070736.\n\n"+
                             "Thân ái,\n" +
                             "BookShop");
                     break;
                 case "NOTIFY-MAY-CANCEL":
-                    mailMessage.setText("Xin chào " + order.getUser().getFullname() + ",\n\n" +
+                    mimeMessage.setText("Xin chào " + order.getUser().getFullname() + ",\n\n" +
                             "Chúng tôi hiện không thể liên lạc với bạn để giao hàng nhưng không thành công.\n" +
                             "Vui lòng kiểm tra lại thông tin đơn hàng và liên hệ với chúng tôi để được hỗ trợ. Nếu không, đơn hàng sẽ bị hủy sau 48h.\n" +
                             "Vui lòng liên hệ với chúng tôi qua email: xuanhuynh254@gmail.com " +
@@ -122,7 +127,7 @@ public class EmailServiceImpl implements EmailService {
 
                     break;
                 case "CANCELLED":
-                    mailMessage.setText(
+                    mimeMessage.setText(
                             "Xin chào " + order.getUser().getFullname() + ",\n\n" +
                             "Cảm ơn bạn đã đặt hàng tại BookShop. Đơn hàng của bạn đã bị hủy.\n" +
                             "Mã đơn hàng: " + orderId + "\n" +
@@ -134,8 +139,20 @@ public class EmailServiceImpl implements EmailService {
                             "Thân ái,\n" +
                             "BookShop");
                     break;
+                case "COMPLETED":
+                    mimeMessage.setText(" Xin chào " + order.getUser().getFullname() + ",\n\n" +
+                            "Cảm ơn bạn đã đặt hàng tại BookShop. Đơn hàng của bạn đã được giao thành công.\n" +
+                            "Mã đơn hàng: " + orderId + "\n" +
+                            "Ngày đặt hàng: " + order.getOrderDate() + "\n" +
+                            "Tổng tiền: " + order.getTotal() + " VND\n\n" +
+                            "Nếu có bất kỳ thắc mắc nào, vui lòng liên hệ với chúng tôi qua email:xuanhuynh254@gmail.com " +
+                            "hoặc số điện thoại 0865070736.\n\n"+
+                            "Thân ái,\n" +
+                            "BookShop");
+                    break;
+
                 default:
-                    mailMessage.setText(" Xin chào " + order.getUser().getFullname() + ",\n\n" +
+                    mimeMessage.setText(" Xin chào " + order.getUser().getFullname() + ",\n\n" +
                             "Cảm ơn bạn đã đặt hàng tại BookShop. Trạng thái đơn hàng của bạn đã được câp nhật.\n" +
                             "Mã đơn hàng: " + orderId + "\n" +
                             "Ngày đặt hàng: " + order.getOrderDate() + "\n" +
@@ -147,7 +164,7 @@ public class EmailServiceImpl implements EmailService {
                     break;
             }
 
-            javaMailSender.send(mailMessage);
+            javaMailSender.send(mimeMessage);
             return "Email sent successfully";
     } catch (Exception e) {
         e.printStackTrace();
@@ -155,4 +172,55 @@ public class EmailServiceImpl implements EmailService {
         return "Email sending failed";
     }
 }
+
+    @Override
+    public String sendMailOTPTRegester(String email, String otp) {
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+            mimeMessageHelper.setFrom(sender, "BookShop");
+            mimeMessageHelper.setTo(email);
+            mimeMessageHelper.setSubject("Xác nhận OTP đăng ký tài khoản");
+            mimeMessageHelper.setText("""
+                    <div>
+                        <h1> OTP: %s  </h1>
+                        <h3>Bookshop</h3>
+                        <br/>
+                    </div>
+                    """.formatted(otp), true);
+            javaMailSender.send(mimeMessage);
+            return "Email sent successfully";
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            return "Email sending failed";
+
+        }
+    }
+
+    @Override
+    public String sendMailOTPForgotPassword(String email, String otp) {
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+            mimeMessageHelper.setFrom(sender, "BookShop");
+            mimeMessageHelper.setTo(email);
+            mimeMessageHelper.setSubject("Xác nhận OTP quên mật khẩu");
+            mimeMessageHelper.setText("""
+                    <div>
+                        <h1> OTP: %s  </h1>
+                        <h3>Bookshop</h3>
+                        <br/>
+                    </div>
+                    """.formatted(otp), true);
+            javaMailSender.send(mimeMessage);
+            return "Email sent successfully";
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            return "Email sending failed";
+        }
+    }
+
+
 }

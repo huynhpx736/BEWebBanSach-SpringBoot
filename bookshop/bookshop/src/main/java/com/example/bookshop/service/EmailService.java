@@ -12,4 +12,8 @@ public interface EmailService {
     // To send an email with attachment
     String sendMailWithAttachment(EmailDetails details);
     String sendMailToCustomer(Integer orderId, String subject);
+
+    String sendMailOTPTRegester(String email, String otp);
+    String sendMailOTPForgotPassword(String email, String otp);
+
 }

@@ -62,13 +62,15 @@ public class OrderServiceImpl implements OrderService {
                 order.setNote(note);
             }
             orderRepository.save(order);
+            if (cancelReason.toLowerCase().contains("hỏng")) return;
+
             //neeusu li do là "không liên lạc được" thì cập nhật lại số lượng của product
-            if (cancelReason.equals("Không liên lạc được với khách hàng")) {
+//            if ((cancelReason.equals("Không liên lạc được"))||(cancelReason.equals("Địa chỉ hiện không thể giao hàng"))||(cancelReason.equals("Không thể giao hàng theo yêu cầu"))||(cancelReason.equals("Hoãn"))) {
                 for (OrderDetail orderDetail : order.getOrderDetails()) {
                     orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() + orderDetail.getQuantity());
                     productRepository.save(orderDetail.getProduct());
                 }
-            }
+//            }
 
             //bình thường cập nhật lại số lượng của product sau khi hủy đơn hàng nhưng admin hủy thì kho hàng không thay đổi
 //            for (OrderDetail orderDetail : order.getOrderDetails()) {
@@ -238,10 +240,9 @@ public class OrderServiceImpl implements OrderService {
 
 
 
-        //Trở thành thành viên Thân thiết sau 10 đơn hàng hoặc tổng giá trị mua hàng đạt 10 triệu đồng.
-        //Trở thành thành viên VIP sau 25 đơn hàng hoặc tổng giá trị mua hàng đạt 25 triệu đồng.
+        //Trở thành thành viên Thân thiết nếu trong tháng hiện tại, số đơn hàng thành công >=5 và tổng giá trị đơn hàng thành công đạt 2000000đ
+        //Trở thành thành viên VIP nếu trong tháng hiện tại, số đơn hàng thành công >=10 và tổng giá trị đơn hàng thành công đạt 5000000đ
         if (status.equals("COMPLETED")) {
-//            Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found"));
             for (OrderDetail orderDetail : order.getOrderDetails()) {
                 //cập nhat lai so luong còn lại sale_volume cua product sau khi hoàn thành đơn hàng
                 orderDetail.getProduct().setSalesVolume(orderDetail.getProduct().getSalesVolume() - orderDetail.getQuantity());
@@ -252,18 +253,16 @@ public class OrderServiceImpl implements OrderService {
             }
 
             //cập nhật lại classification của user
-//            User user = orderDTO.getUser();
             User user = order.getUser();
-            int totalOrders = orderRepository.countByUserId(user.getId());
-            float totalAmount = orderRepository.sumTotalByUserId(user.getId());
-            if (totalOrders >= 10 || totalAmount >= 10000000) {
+            int totalOrders = orderRepository.countCompleteByUserId(user.getId());
+            float totalAmount = orderRepository.sumTotaCompletedlByUserId(user.getId());
+            if (totalOrders >= 4 && totalOrders<8 && totalAmount >= 2000000) {
                 if (user.getClassification() == null || user.getClassification().equals("NORMAL"))
                     user.setClassification("LOYAL");
-                user.setClassification("LOYAL");
             }
-            if (totalOrders >= 25 || totalAmount >= 25000000) {
+            if (totalOrders >= 8 && totalAmount >= 5000000) {
                 if (user.getClassification() == null || !user.getClassification().equals("VIP"))
-                user.setClassification("VIP");
+                    user.setClassification("VIP");
             }
             userRepository.save(user);
         }

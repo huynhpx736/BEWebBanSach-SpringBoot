@@ -213,6 +213,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void changePasswordByEmail(String email, String newPassword) {
+        try {
+            User user = userRepository.findByEmail(email);
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new UserNotFoundException("Email not found");
+        }
+    }
+
+    @Override
     public UserDTO registerUser(SignUpRequest userRegistrationDTO) {
         if (userRepository.findByUsername(userRegistrationDTO.getUsername()) != null) {
             throw new RuntimeException("Username already exists");
@@ -248,6 +259,12 @@ public class UserServiceImpl implements UserService {
         }
         if (user.getActive() == 0) {
             throw new RuntimeException("User is inactive");
+        }
+        int countOrder = userRepository.countOrderCurrentMonthByUsername(user.getUsername());
+        System.out.println(countOrder);
+        if (countOrder <=1) {
+            user.setClassification("NORMAL");
+            userRepository.save(user);
         }
 
         return new UserDTO(user.getId(), user.getUsername(), null, user.getEmail(), user.getRole(), user.getAvatar(), user.getFullname(), user.getPhone(), user.getClassification(), user.getActive());
@@ -291,5 +308,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void verifyAccount(String email, String otp, Integer roleId) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("Email not found");
+        }
+        if (!otp.equals("123456")) {
+            throw new RuntimeException("Invalid OTP");
+        }
+        if (user.getRole() != roleId) {
+            throw new RuntimeException("Invalid role");
+        }
+        user.setActive(1);
+        userRepository.save(user);
     }
 }

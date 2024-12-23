@@ -17,6 +17,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("SELECT p FROM Product p WHERE p.title LIKE %?1%")
     List<Product> findByTitleContaining(String keyword);
 
+    @Query("SELECT p FROM Product p ORDER BY p.id DESC")
+    List<Product> findTop10ByOrderByCreatedAtDesc();
+
     //truong hop dung sp o database tim kiem boolean
 //    @Query(value = "CALL SearchProductsWithPriority :title, :titleWeight, :author, :authorWeight, " +
 //            ":category, :categoryWeight, :topic, :topicWeight, :publisher, :publisherWeight, " +
